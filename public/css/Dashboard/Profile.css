@@ -1,0 +1,50 @@
+.box {
+  display: flex;
+  flex-direction: column;
+  padding: 30px 30px;
+  border: 1px solid rgb(0, 0, 0, 0.15);
+  border-radius: 10px;
+  max-width: 30rem;
+}
+
+td {
+  padding: 0.25rem;
+}
+td:nth-child(2) label {
+  display: none;
+}
+
+.form-input {
+  width: 100%;
+  padding: 0.25rem;
+  margin-left: 0;
+  margin-right: 0;
+  border: 1px solid rgb(0, 0, 0, 0.15);
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.btn {
+  width: fit-content;
+  padding: 0.25rem 1rem;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  text-align: right;
+}
+
+.btn-primary {
+  border: 1px solid rgb(0, 0, 0, 0.15);
+  background-color: var(--primary);
+  color: white;
+}
+
+@media screen and (max-width: 425px) {
+  td:nth-child(1) {
+    display: none;
+  }
+  td:nth-child(2) label {
+    display: block;
+  }
+}

@@ -1,0 +1,12 @@
+.table-wrapper {
+  overflow-x: auto;
+}
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+th,
+td {
+  border: 1px solid var(--secondary);
+  padding: 0.25rem 0.5rem;
+}

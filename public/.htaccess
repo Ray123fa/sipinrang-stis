@@ -1,0 +1,11 @@
+Options -Indexes
+Options +FollowSymLinks
+
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^([\s\S]*)$ index.php?url=$1 [QSA,L]
+RewriteRule ^/?$ /landingpage [L]
+
+ErrorDocument 404 "https://sipinrang.dev/notfound"
+ErrorDocument 403 "https://sipinrang.dev/forbidden"

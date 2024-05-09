@@ -1,0 +1,15 @@
+.alert {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 5px;
+}
+
+.alert-warning {
+  background-color: var(--warning);
+  color: var(--black);
+}
+
+.alert-success {
+  background-color: var(--success);
+  color: var(--white);
+}

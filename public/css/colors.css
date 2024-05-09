@@ -1,0 +1,17 @@
+:root {
+  --white: #fff;
+  --primary: #0d6efd;
+  --primary-1: #0092d7;
+  --primary-2: #2a4e9b;
+  --gradient-primary: linear-gradient(to left, var(--primary-2), var(--primary-1));
+  --secondary: #6c757d;
+  --tertiary: #f8f9fa;
+  --success: #198754;
+  --danger: #dc3545;
+  --warning: #ffc107;
+  --info: #0dcaf0;
+  --light: #faf7f5;
+  --dark: #212529;
+  --black: #000;
+  --gray: #d7dce0;
+}

@@ -1,0 +1,160 @@
+body {
+  height: 300vh;
+}
+
+nav {
+  position: fixed;
+  top: 0;
+  left: 12rem;
+  right: 0;
+  z-index: 1000;
+  background-color: #ece7e6;
+  transition: all 0.3s;
+}
+.nav-left {
+  left: 0;
+}
+
+.profile-dropdown {
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 1rem;
+}
+.profile-dropdown-list {
+  position: fixed;
+  top: 50px;
+  right: 1rem;
+  background-color: var(--light);
+  border: 1px solid var(--secondary);
+  border-radius: 0.25rem;
+  z-index: 1000;
+  transition: all 0.3s;
+}
+.profile-dropdown-list li:hover {
+  background-color: var(--gray);
+}
+
+aside {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 12rem;
+  z-index: 1000;
+  background-color: var(--primary-1);
+  transition: all 0.3s;
+}
+.aside-left {
+  left: -12rem;
+}
+h1.sidebar-brand {
+  font-size: 19px;
+  font-weight: bold;
+}
+.sidebar-list li {
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+.sidebar-list li a {
+  display: block;
+  color: var(--light);
+  text-decoration: none;
+}
+.sidebar-list li.active {
+  background-color: rgba(42, 74, 155, 0.4);
+}
+
+main {
+  position: absolute;
+  top: 46.25px;
+  left: 12rem;
+  right: 0;
+  margin: 1rem;
+  transition: all 0.3s;
+  z-index: 0;
+}
+.main-left {
+  left: 0;
+}
+
+.wrapper {
+  border-radius: 0.35rem;
+  border: 1px solid var(--secondary);
+  display: block;
+  position: relative;
+  right: 0;
+  top: 0;
+  width: 100%;
+  overflow-x: auto;
+}
+
+#paginate li a {
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 0.25rem;
+}
+#paginate li a:hover {
+  background-color: var(--primary-1);
+  color: var(--light);
+}
+.curr-page {
+  background-color: var(--primary-1);
+  color: var(--light);
+}
+
+@media screen and (max-width: 768px) {
+  nav,
+  main {
+    left: 0;
+  }
+  .nav-left,
+  .main-left {
+    left: 12rem;
+  }
+  aside {
+    left: -12rem;
+  }
+  .aside-left {
+    left: 0;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  #filter-form {
+    flex-direction: column;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  #top-table,
+  #bottom-table {
+    flex-direction: column;
+  }
+  #paginate {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+}
+
+@media screen and (max-width: 425px) {
+  nav,
+  main {
+    left: 0;
+  }
+  .nav-left,
+  .main-left {
+    left: 10rem;
+  }
+  aside {
+    width: 10rem;
+  }
+  .aside-left {
+    left: 0;
+  }
+
+  h1.sidebar-brand {
+    font-size: 16px;
+  }
+
+  #user {
+    display: none;
+  }
+}
