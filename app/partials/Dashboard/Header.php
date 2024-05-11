@@ -31,8 +31,13 @@
 			</span>
 			<div class="profile-dropdown">
 				<div class="d-flex justify-content-between align-items-center">
-					<!-- <img class="rounded-circle mr-2" src="img/komnet.png" alt="" width="30"> -->
-					<i class="fas fa-user-circle mr-2 fs-30px"></i>
+					<img class="rounded-circle mr-2" src="<?php
+																								if ($data['profile_img'] == null) {
+																									echo 'img/profile.png';
+																								} else {
+																									echo $data['profile_img'];
+																								}
+																								?>" alt="Foto Profil" width="30" height="30">
 					<span class="mr-2" id="user"><?= $data['unit'] ?></span>
 					<i class="fas fa-caret-down mr-2" aria-hidden="true"></i>
 				</div>
