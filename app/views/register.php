@@ -1,7 +1,7 @@
 <form method="POST" action="register/do">
 	<input class="form-input my-1" type="text" name="username" id="username" placeholder="Username" oninput="this.style.textTransform = 'lowercase'" maxlength="50" required>
 
-	<input class="form-input my-1" type="email" name="email" id="email" placeholder="Email STIS" pattern="^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$" maxlength="50" required>
+	<input class="form-input my-1" type="email" name="email" id="email" placeholder="Email STIS" maxlength="50" required>
 
 	<input class="form-input my-1" type="text" name="unit" id="unit" placeholder="Organisasi/Unit/UKM/Himada" oninput="this.style.textTransform = 'uppercase'" required>
 
