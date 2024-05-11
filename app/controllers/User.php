@@ -22,11 +22,12 @@ class User extends Controller
 		$this->level = $this->model('UserModel')->getLevelByUsername($this->username);
 
 		$this->data = [
-			'css' => ['Dashboard/Style.css'],
+			'css' => ['Dashboard/Style.css', 'flasher.css'],
 			'js' => ['Dashboard/Main.js'],
 			'user' => $this->username,
 			'unit' => $this->unit,
-			'level' => $this->level
+			'level' => $this->level,
+			'profile_img' => $this->model('UserModel')->getProfileImgPath($this->username),
 		];
 	}
 
@@ -59,7 +60,7 @@ class User extends Controller
 
 		$this->data['title'] = 'Profile';
 		$this->data['profile'] = $this->model('UserModel')->getAllByUsername($this->username);
-		$this->data['css'][1] = 'Dashboard/Profile.css';
+		$this->data['css'][2] = 'Dashboard/Profile.css';
 		$this->data['js'][1] = 'Dashboard/Profile.js';
 
 		$this->partial('Dashboard/Header', $this->data);
@@ -75,7 +76,7 @@ class User extends Controller
 			$this->redirect('forbidden');
 		}
 
-		$this->model('UserModel')->editProfile($_POST, $this->username);
+		$this->model('UserModel')->editProfile($_POST);
 	}
 
 	// Change Password
@@ -96,7 +97,7 @@ class User extends Controller
 		}
 
 		$this->data['title'] = 'Semua Peminjaman';
-		$this->data['css'][1] = 'Dashboard/Peminjaman.css';
+		$this->data['css'][2] = 'Dashboard/Peminjaman.css';
 		$this->data['js'][1] = 'Dashboard/allPeminjaman.js';
 
 		$start = 0;
@@ -120,9 +121,9 @@ class User extends Controller
 		$this->data['totalHalaman'] = $totalHalaman;
 
 		if ($page < 1) {
-			$this->redirect('user/all-peminjaman/1');
+			$this->redirect('user/all_peminjaman/1');
 		} else if ($page > $totalHalaman) {
-			$this->redirect('user/all-peminjaman/' . $totalHalaman);
+			$this->redirect('user/all_peminjaman/' . $totalHalaman);
 		}
 
 		if ($page > 1) {
@@ -161,7 +162,7 @@ class User extends Controller
 		}
 
 		$this->data['title'] = 'Peminjaman Saya';
-		$this->data['css'][1] = 'Dashboard/Peminjaman.css';
+		$this->data['css'][2] = 'Dashboard/Peminjaman.css';
 		$this->data['js'][1] = 'Dashboard/myPeminjaman.js';
 
 		$start = 0;
@@ -175,7 +176,7 @@ class User extends Controller
 			$limit = (int) $_SESSION['limit'];
 		}
 
-		$totalRows = (int) $this->model('PeminjamanModel')->countMyPeminjaman($this->username);
+		$totalRows = (int) $this->model('PeminjamanModel')->countMyPeminjaman($this->unit);
 		if ($limit == -1) {
 			$limit = $totalRows;
 		}
@@ -221,6 +222,7 @@ class User extends Controller
 	// Logout
 	public function logout()
 	{
+		session_unset();
 		session_destroy();
 		$this->redirect('login');
 	}
