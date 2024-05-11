@@ -3,16 +3,23 @@
 
 	<section class="mt-6" id="profile-information">
 		<div class="mt-4">
-			<form class="box shadow bg-light" action="user/edit_profile" method="POST">
+			<form class="box shadow bg-light" action="user/edit_profile" method="POST" enctype="multipart/form-data">
 				<h3>Informasi Profil</h3>
 				<p>Section untuk mengubah profil pengguna</p>
 				<hr class="my-1">
 
 				<?php Flasher::flash(); ?>
 
+				<input type="hidden" name="id" value="<?= $data['id'] ?>">
 				<label for="profile_img" class="text-center cursor-pointer">
-					<img class="rounded-circle" src="img/logo.png" alt="Foto Profil" width="70" height="70" id="profile_img_preview">
-					<span style="margin-left: -20px"><i class="fas fa-camera" style="color: var(--primary-2);"></i></span>
+					<img class="rounded-circle" src="<?php
+																						if ($data['profile_img_path'] == null) {
+																							echo 'img/profile.png';
+																						} else {
+																							echo $data['profile_img_path'];
+																						}
+																						?>" alt="Foto Profil" width="70" height="70" id="profile_img_preview">
+					<span style="margin-left: -15px"><i class="fas fa-camera" style="color: var(--primary-2);"></i></span>
 					<input type="file" class="d-none" name="profile_img" id="profile_img" accept="image/*">
 				</label>
 				<table>
@@ -27,7 +34,7 @@
 						<td><label for="email">Email</label></td>
 						<td>
 							<label class="mb-1" for="email">Email</label>
-							<input autocomplete="off" class="form-input" type="email" name="email" id="email" value="<?= $data['email'] ?>" required>
+							<input autocomplete="off" class="form-input" type="email" name="email" id="email" value="<?= $data['email'] ?>" maxlength="50" required>
 						</td>
 					</tr>
 					<tr>
