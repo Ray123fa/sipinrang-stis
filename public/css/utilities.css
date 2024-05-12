@@ -183,6 +183,10 @@
 }
 
 /* Padding Top-Bottom */
+.py-1 {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}
 .py-2 {
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
@@ -252,6 +256,9 @@
 /* Font Size */
 .fs-2 {
   font-size: 1.5rem;
+}
+.fs-3 {
+  font-size: 1.25rem;
 }
 .fs-4 {
   font-size: 1rem;
