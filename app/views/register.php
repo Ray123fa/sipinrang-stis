@@ -11,7 +11,7 @@
 	<input type="hidden" name="level" id="level" value="3">
 
 	<button type="submit" name="register" class="my-2 btn btn-primary">Register</button>
-	<div class="d-flex justify-content-center text-small fw-bold">
+	<div class="d-flex justify-content-center text-small fw-bold mt-2">
 		<span class="text-center">Sudah mempunyai akun? <a href="login" class="text-primary text-decoration-none">Login sekarang!</a></span>
 	</div>
 </form>
