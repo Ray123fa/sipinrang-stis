@@ -5,11 +5,11 @@
 		<span class="nav-brand">Sipinrang</span>
 	</div>
 	<ul class="d-flex gap-2 list-style-none" id="nav-menu">
-		<li class="nav-link"><a class="px-4 py-2 scroll-link" href="#home">Beranda</a></li>
-		<li class="nav-link"><a class="px-4 py-2 scroll-link" href="#about">Tentang Kami</a></li>
-		<li class="nav-link"><a class="px-4 py-2 scroll-link" href="#faq">FAQ</a></li>
-		<li class="nav-link"><a class="px-4 py-2 scroll-link" href="#services">Layanan</a></li>
+		<li class="nav-link py-1"><a class="px-4 py-2 scroll-link" href="#home">Beranda</a></li>
+		<li class="nav-link py-1"><a class="px-4 py-2 scroll-link" href="#about">Tentang Kami</a></li>
+		<li class="nav-link py-1"><a class="px-4 py-2 scroll-link" href="#faq">FAQ</a></li>
+		<li class="nav-link py-1"><a class="px-4 py-2 scroll-link" href="#services">Layanan</a></li>
 	</ul>
-	<span class="z-1000" id="mobile-nav"><i class="fas fa-bars-staggered"></i></span>
+	<span class="z-1000 fs-3" id="mobile-nav"><i class="fas fa-bars-staggered"></i></span>
 </nav>
 <!-- Nav End -->
