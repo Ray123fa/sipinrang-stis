@@ -53,11 +53,3 @@
   background-color: var(--secondary);
   color: white;
 }
-
-@media (max-width: 425px) {
-  .form-input,
-  .btn {
-    padding: 0.5rem;
-    font-size: 0.9rem;
-  }
-}
