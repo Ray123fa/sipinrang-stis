@@ -9,7 +9,7 @@ class User extends Controller
 	public function __construct()
 	{
 		$_SESSION['link'] = explode("=", $_SERVER['QUERY_STRING'])[1];
-		if (!$_SESSION['user']) {
+		if (!isset($_SESSION['user'])) {
 			$this->redirect('login');
 		} else {
 			if (isset($_SESSION['link'])) {
