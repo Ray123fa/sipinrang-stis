@@ -61,6 +61,7 @@
 					<h3 class="service-title">Jadwal Peminjaman</h3>
 					<p class="service-desc">Lihat jadwal peminjaman ruang yang sudah dilakukan.</p>
 				</div>
+			</div>
 		</section>
 	</div>
 </main>
