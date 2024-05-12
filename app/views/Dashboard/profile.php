@@ -11,17 +11,19 @@
 				<?php Flasher::flash(); ?>
 
 				<input type="hidden" name="id" value="<?= $data['id'] ?>">
-				<label for="profile_img" class="text-center cursor-pointer">
-					<img class="rounded-circle" src="<?php
-																						if ($data['profile_img_path'] == null) {
-																							echo 'img/profile.png';
-																						} else {
-																							echo $data['profile_img_path'];
-																						}
-																						?>" alt="Foto Profil" width="70" height="70" id="profile_img_preview">
-					<span style="margin-left: -15px"><i class="fas fa-camera" style="color: var(--primary-2);"></i></span>
-					<input type="file" class="d-none" name="profile_img" id="profile_img" accept="image/*">
-				</label>
+				<div class="text-center">
+					<label for="profile_img" class="cursor-pointer my-2 w-fit-content">
+						<img class="rounded-circle" src="<?php
+																							if ($data['profile_img_path'] == null) {
+																								echo 'img/profile.png';
+																							} else {
+																								echo $data['profile_img_path'];
+																							}
+																							?>" alt="Foto Profil" width="70" height="70" id="profile_img_preview">
+						<span style="margin-left: -10px"><i class="bg-gray fas fa-camera p-1 rounded-circle" style="color: var(--primary-2); width:1rem; height:1rem;"></i></span>
+						<input type="file" class="d-none" name="profile_img" id="profile_img" accept="image/*">
+					</label>
+				</div>
 				<table>
 					<tr>
 						<td><label for="username">Username</label></td>
