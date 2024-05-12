@@ -104,26 +104,26 @@ class UserModel
 
 			// Pindahkan file ke folder upload
 			if (move_uploaded_file($sourceFile, $targetFile)) {
-				$this->db->query('UPDATE ' . $this->table . ' SET username = :username, email = :email, profile_img_path = :profile_img_path WHERE id = :id');
-
 				if ($this->isExistUsername($data['username']) && $data['username'] != $tempUser) {
 					Flasher::setFlash('Username sudah terdaftar pada sistem!', 'warning');
 					header('Location: ' . BASE_URL . 'user/profile');
 					exit;
 				}
 
-				if (!$this->isEmailSTIS($data['email'])) {
+				if ($this->isEmailSTIS($data['email']) == false) {
 					Flasher::setFlash('Email harus berdomain STIS!', 'warning');
 					header('Location: ' . BASE_URL . 'user/profile');
 					exit;
 				}
 
+				$this->db->query('UPDATE ' . $this->table . ' SET username = :username, email = :email, profile_img_path = :profile_img_path WHERE id = :id');
 				$this->db->bind(':username', $data['username']);
 				$this->db->bind(':email', $data['email']);
 				$this->db->bind(':profile_img_path', $targetFile);
 				$this->db->bind(':id', $data['id']);
 				$this->db->execute();
 
+				unset($tempUser);
 				$_SESSION['user'] = $data['username'];
 				Flasher::setFlash('Profil berhasil diubah', 'success');
 				header('Location: ' . BASE_URL . 'user/profile');
@@ -134,30 +134,29 @@ class UserModel
 				exit;
 			}
 		} else {
-			$this->db->query('UPDATE ' . $this->table . ' SET username = :username, email = :email WHERE id = :id');
-
 			if ($this->isExistUsername($data['username']) && $data['username'] != $tempUser) {
 				Flasher::setFlash('Username sudah terdaftar pada sistem!', 'warning');
 				header('Location: ' . BASE_URL . 'user/profile');
 				exit;
 			}
 
-			if (!$this->isEmailSTIS($data['email'])) {
+			if ($this->isEmailSTIS($data['email']) == false) {
 				Flasher::setFlash('Email harus berdomain STIS!', 'warning');
 				header('Location: ' . BASE_URL . 'user/profile');
 				exit;
 			}
 
+			$this->db->query('UPDATE ' . $this->table . ' SET username = :username, email = :email WHERE id = :id');
 			$this->db->bind(':username', $data['username']);
 			$this->db->bind(':email', $data['email']);
 			$this->db->bind(':id', $data['id']);
 			$this->db->execute();
 
+			unset($tempUser);
 			$_SESSION['user'] = $data['username'];
 			Flasher::setFlash('Profil berhasil diubah', 'success');
 			header('Location: ' . BASE_URL . 'user/profile');
 			exit;
 		}
-		unset($tempUser);
 	}
 }
