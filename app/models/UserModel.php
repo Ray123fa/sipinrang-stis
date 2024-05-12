@@ -71,6 +71,7 @@ class UserModel
 
 	public function editProfile($data)
 	{
+		$tempUser = $_SESSION['user'];
 		unset($_SESSION['user']);
 
 		if (!empty($_FILES['profile_img']['name'])) {
@@ -105,7 +106,7 @@ class UserModel
 			if (move_uploaded_file($sourceFile, $targetFile)) {
 				$this->db->query('UPDATE ' . $this->table . ' SET username = :username, email = :email, profile_img_path = :profile_img_path WHERE id = :id');
 
-				if ($this->isExistUsername($data['username'])) {
+				if ($this->isExistUsername($data['username']) && $data['username'] != $tempUser) {
 					Flasher::setFlash('Username sudah terdaftar pada sistem!', 'warning');
 					header('Location: ' . BASE_URL . 'user/profile');
 					exit;
@@ -135,7 +136,7 @@ class UserModel
 		} else {
 			$this->db->query('UPDATE ' . $this->table . ' SET username = :username, email = :email WHERE id = :id');
 
-			if ($this->isExistUsername($data['username'])) {
+			if ($this->isExistUsername($data['username']) && $data['username'] != $tempUser) {
 				Flasher::setFlash('Username sudah terdaftar pada sistem!', 'warning');
 				header('Location: ' . BASE_URL . 'user/profile');
 				exit;
@@ -157,5 +158,6 @@ class UserModel
 			header('Location: ' . BASE_URL . 'user/profile');
 			exit;
 		}
+		unset($tempUser);
 	}
 }
