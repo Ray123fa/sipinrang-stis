@@ -1,5 +1,5 @@
 <?php
-class LandingPage extends Controller
+class Landingpage extends Controller
 {
 	public function index()
 	{

@@ -1,5 +1,5 @@
 <?php
-class NotFound extends Controller
+class Notfound extends Controller
 {
 	public function index()
 	{
