@@ -1,22 +1,43 @@
 const allSelect = document.getElementById("select-all");
 const checkboxes = document.querySelectorAll(".checkbox");
+const btnHapus = document.getElementById("btn-hapus");
 
 if (allSelect != null) {
   allSelect.addEventListener("click", () => {
     if (allSelect.checked) {
-      const text = "Tindakan ini akan memilih semua data yang ada di halaman ini. Lanjutkan?";
-      if (confirm(text) === true) {
-        checkboxes.forEach((checkbox) => {
-          checkbox.checked = true;
-        });
-      } else {
-        allSelect.checked = false;
-      }
+      btnHapus.disabled = false;
+      checkboxes.forEach((checkbox) => {
+        checkbox.checked = true;
+      });
     } else {
       checkboxes.forEach((checkbox) => {
         checkbox.checked = false;
       });
+      btnHapus.disabled = true;
     }
+  });
+
+  checkboxes.forEach((checkbox) => {
+    checkbox.addEventListener("click", () => {
+      let count = 0;
+      checkboxes.forEach((checkbox) => {
+        if (checkbox.checked) {
+          count++;
+        }
+      });
+
+      if (count > 0) {
+        btnHapus.disabled = false;
+      } else {
+        btnHapus.disabled = true;
+      }
+
+      if (count == checkboxes.length) {
+        allSelect.checked = true;
+      } else {
+        allSelect.checked = false;
+      }
+    });
   });
 }
 
@@ -36,10 +57,10 @@ entries.addEventListener("change", () => {
     if (xhr.readyState == 4 && xhr.status == 200) {
       const result = document.getElementById("result");
       result.innerHTML = xhr.responseText;
-      window.history.pushState({}, null, `user/all_peminjaman/1`);
+      window.history.pushState({}, null, `user/all-peminjaman/1`);
     }
   };
-  xhr.open("POST", `user/all_peminjaman`, true);
+  xhr.open("POST", `user/all-peminjaman`, true);
   xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
   xhr.send(`limit=${entries.value}`);
 });
@@ -51,7 +72,7 @@ search.addEventListener("keyup", () => {
     if (xhr.readyState == 4 && xhr.status == 200) {
       const result = document.getElementById("result");
       result.innerHTML = xhr.responseText;
-      window.history.pushState({}, null, `user/all_peminjaman/1`);
+      window.history.pushState({}, null, `user/all-peminjaman/1`);
     }
   };
 
@@ -59,7 +80,7 @@ search.addEventListener("keyup", () => {
   data.append("limit", entries.value);
   data.append("search", search.value);
 
-  xhr.open("POST", `search/all_peminjaman`, true);
+  xhr.open("POST", `api/search-all-peminjaman`, true);
   xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
   xhr.send(data);
 });
