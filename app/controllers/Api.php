@@ -1,5 +1,5 @@
 <?php
-class Search extends Controller
+class Api extends Controller
 {
 	private $data;
 	private $username;
@@ -8,8 +8,8 @@ class Search extends Controller
 
 	public function __construct()
 	{
-		if (!isset($_POST['search']) && !isset($_POST['filter'])) {
-			$this->redirect('forbidden');
+		if (!isset($_SESSION['user'])) {
+			$this->redirect('login');
 		}
 
 		$this->username = $_SESSION['user'];
@@ -27,11 +27,15 @@ class Search extends Controller
 
 	public function index()
 	{
-		Search::__construct();
+		$this->redirect('user');
 	}
 
-	public function all_peminjaman()
+	public function search_all_peminjaman()
 	{
+		if (!isset($_POST['search']) || !isset($_POST['limit'])) {
+			$this->redirect('user/all-peminjaman');
+		}
+
 		$search = $_POST['search'];
 		$_SESSION['search_all'] = $search;
 
@@ -52,8 +56,12 @@ class Search extends Controller
 		$this->helper('Dashboard/allPeminjaman', $this->data);
 	}
 
-	public function my_peminjaman()
+	public function search_my_peminjaman()
 	{
+		if (!isset($_POST['search']) || !isset($_POST['limit'])) {
+			$this->redirect('user/my-peminjaman');
+		}
+
 		$search = $_POST['search'];
 		$_SESSION['search_my'] = $search;
 
@@ -72,5 +80,16 @@ class Search extends Controller
 		$this->data['peminjaman'] = $this->model('PeminjamanModel')->searchMyPeminjaman($search, $start, $limit, $this->unit);
 
 		$this->helper('Dashboard/myPeminjaman', $this->data);
+	}
+
+	// Get Ruang Available
+	public function get_avail_ruang($tgl = null, $sesi = null)
+	{
+		if (is_null($tgl) || is_null($sesi)) {
+			$this->redirect('user/tambah-peminjaman');
+		}
+
+		$ruang = $this->model('RuangModel')->getAvailRuang($tgl, $sesi);
+		echo json_encode($ruang);
 	}
 }
