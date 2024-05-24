@@ -43,6 +43,9 @@
 .bg-success {
   background-color: var(--success);
 }
+.bg-danger {
+  background-color: var(--danger);
+}
 .bg-gradient-primary {
   background-image: var(--gradient-primary);
 }
@@ -287,6 +290,9 @@
 }
 
 /* Border */
+.border-none {
+  border: none;
+}
 .rounded-circle {
   border-radius: 50%;
 }
