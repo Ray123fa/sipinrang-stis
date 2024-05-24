@@ -16,8 +16,7 @@ class AccountModel
 		$row = $this->db->single();
 
 		if ($row) {
-			$salt = "sipinrang";
-			if (password_verify($salt . $data['password'], $row['password'])) {
+			if (password_verify($data['password'], $row['password'])) {
 				return true;
 			}
 		}
@@ -52,8 +51,7 @@ class AccountModel
 		if ($password != $repassword) {
 			return "Password dan konfirmasi password tidak sesuai!";
 		}
-		$salt = "sipinrang";
-		$password = password_hash($salt . $password, PASSWORD_DEFAULT);
+		$password = password_hash($password, PASSWORD_DEFAULT);
 
 		// Insert data ke database
 		$this->db->query('INSERT INTO ' . $this->table . ' (username, email, unit, password, level) VALUES (:username, :email, :unit, :password, :level)');
