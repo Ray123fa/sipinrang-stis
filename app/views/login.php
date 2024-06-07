@@ -6,7 +6,8 @@
 		<label for="remember-me" class="cursor-pointer text-small">Ingat saya</label>
 	</div>
 	<button type="submit" name="login" class="my-2 mt-4 btn btn-primary">Login</button>
-	<div class="d-flex justify-content-center text-small fw-bold mt-2">
-		<span class="text-center">Belum punya akun? <a href="register" class="text-primary text-decoration-none">Daftar sekarang!</a></span>
+	<div class="d-flex justify-content-center text-small fw-bold mt-2 flex-column">
+		<span class="text-center mb-1">Belum punya akun? <a href="register" class="text-primary text-decoration-none">Daftar sekarang!</a></span>
+		<span class="text-center">Atau <a class="text-primary text-decoration-none cursor-pointer" href="login/guest">login sebagai tamu</a></span>
 	</div>
 </form>
