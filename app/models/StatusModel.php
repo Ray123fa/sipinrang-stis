@@ -1,7 +1,7 @@
 <?php
 class StatusModel
 {
-	private $table = 'kode_status_peminjaman';
+	private $table = 'daftar_status_peminjaman';
 	private $db;
 
 	public function __construct()
