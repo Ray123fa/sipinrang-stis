@@ -15,10 +15,11 @@ class AccountModel
 		$this->db->bind(':username', strtolower($data['username']));
 		$row = $this->db->single();
 
-		if ($row) {
+		if ($this->db->rowCount() > 0) {
 			if (password_verify($data['password'], $row['password'])) {
 				return true;
 			}
+			return false;
 		}
 
 		return false;
@@ -36,8 +37,9 @@ class AccountModel
 		// Cek apakah username sudah ada
 		$this->db->query('SELECT username FROM ' . $this->table . ' WHERE username = :username');
 		$this->db->bind(':username', $username);
-		$row = $this->db->single();
-		if ($row) {
+		$this->db->single();
+
+		if ($this->db->rowCount() > 0) {
 			return "Username sudah terdaftar pada sistem!";
 		}
 
