@@ -32,14 +32,6 @@ class UserModel
 		return $row;
 	}
 
-	// public function getAllUnit()
-	// {
-	// 	$this->db->query('SELECT unit FROM ' . $this->table);
-	// 	$row = $this->db->resultSet();
-
-	// 	return $row;
-	// }
-
 	public function getAllByUsername($username)
 	{
 		$this->db->query('SELECT * FROM ' . $this->table . ' WHERE username = :username');
@@ -171,6 +163,20 @@ class UserModel
 			}
 		} else {
 			return "Password lama salah";
+		}
+	}
+
+	public function addChatID($username, $chatID)
+	{
+		$this->db->query('UPDATE ' . $this->table . ' SET chat_id = :chat_id WHERE username = :username');
+		$this->db->bind(':chat_id', $chatID);
+		$this->db->bind(':username', $username);
+		$this->db->execute();
+
+		if ($this->db->rowCount() > 0) {
+			return true;
+		} else {
+			return false;
 		}
 	}
 }
