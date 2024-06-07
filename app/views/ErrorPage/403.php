@@ -13,9 +13,11 @@
 	<link rel="stylesheet" href="css/utilities.css">
 </head>
 
-<body class="p-2">
-	<h1>403 Forbidden</h1>
-	<p>Kamu tidak memiliki akses untuk membuka halaman ini.</p>
+<body class="p-2 bg-gradient-primary text-light">
+	<div style="height: 100vh;" class="d-flex justify-content-center align-items-center flex-column text-center">
+		<h1 style="font-size: 3rem;">403 Forbidden</h1>
+		<p style="font-size: 1.25rem;">Kamu tidak memiliki akses untuk membuka halaman ini.</p>
+	</div>
 </body>
 
 </html>

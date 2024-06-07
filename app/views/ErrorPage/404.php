@@ -13,9 +13,11 @@
 	<link rel="stylesheet" href="css/utilities.css">
 </head>
 
-<body class="p-2">
-	<h1>404 Not Found</h1>
-	<p>Halaman yang Anda cari tidak ditemukan.</p>
+<body class="p-2 bg-gradient-primary text-light">
+	<div style="height: 100vh;" class="d-flex justify-content-center align-items-center flex-column text-center">
+		<h1 style="font-size: 3rem;">404 Not Found</h1>
+		<p style="font-size: 1.25rem;">Halaman yang Anda cari tidak ditemukan.</p>
+	</div>
 </body>
 
 </html>
