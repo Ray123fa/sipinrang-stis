@@ -21,7 +21,7 @@ Aplikasi ini juga terintegrasi dengan bot telegram yang dapat mengirimkan notifi
 | Permission                   | Roles         |
 | ---------------------------- | ------------- |
 | `CRUD Peminjaman`            | `BAU`, `Unit` |
-| `CRUD User`                  | `BAU`         |
+| `RUD User`                  | `BAU`         |
 | `Update Profile`                | `BAU`, `Unit` |
 | `Update Status Peminjaman`   | `BAU`         |
 | `Read-only Semua Peminjaman` | `Guest`       |
