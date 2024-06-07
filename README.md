@@ -28,9 +28,9 @@ Aplikasi ini juga terintegrasi dengan bot telegram yang dapat mengirimkan notifi
 
 ### Views
 
-`Landing Page`: Sebagai halaman awal aplikasi.
-`Login Page`: Sebagai halaman untuk masuk ke dalam sistem berdasar roles/level.
-`Dashboard`: Tampilan setelah berhasil login.
+`Landing Page` : Sebagai halaman awal aplikasi.
+`Login Page` : Sebagai halaman untuk masuk ke dalam sistem berdasar roles/level.
+`Dashboard` : Tampilan setelah berhasil login.
 
 ### Built With
 
