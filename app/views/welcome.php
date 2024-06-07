@@ -17,9 +17,9 @@
 			<h2 class="content-title text-center">Tentang Kami</h2>
 			<div class="horizontal-line"></div>
 			<p class="content-desc text-justify">
-				Sipinrang merupakan sebuah sistem informasi yang dibuat untuk mempermudah proses peminjaman ruang dan fasilitas yang ada di Polstat STIS. <br><br>
-				Sipinrang dikembangkan dengan alasan untuk mempermudah mekanisme yang sudah berjalan hingga saat ini, yaitu melalui perantara BEM yang kemudian diajukan kepada BAU, dan diteruskan ke satpam serta CS. Mekanisme tersebut memiliki keterbatasan karena yang hendak meminjam ruangan/fasilitas tidak dapat mengetahui apakah tersedia atau tidak. <br><br>
-				Dengan dikembangkannya Sipinrang ini diharapkan dapat mengatasi keterbatasan-keterbatasan mekanisme yang sudah berjalan hingga saat ini, serta proses peminjaman ruang dan fasilitas di Polstat STIS menjadi lebih efisien dan efektif.
+				Sipinrang merupakan sebuah sistem informasi yang dibuat untuk mempermudah proses peminjaman ruang yang ada di Polstat STIS. <br><br>
+				Sipinrang dikembangkan dengan alasan untuk mempermudah mekanisme yang sudah berjalan hingga saat ini, yaitu melalui perantara BEM yang kemudian diajukan kepada BAU, dan diteruskan ke satpam serta CS. Mekanisme tersebut memiliki keterbatasan karena yang hendak meminjam ruangan tidak dapat mengetahui apakah tersedia atau tidak. <br><br>
+				Dengan dikembangkannya Sipinrang ini diharapkan dapat mengatasi keterbatasan-keterbatasan mekanisme yang sudah berjalan hingga saat ini, serta proses peminjaman ruang di Polstat STIS menjadi lebih efisien dan efektif.
 			</p>
 		</section>
 
@@ -29,15 +29,19 @@
 			<ol>
 				<li class="pb-4">
 					<h3>Bagaimana cara melakukan peminjaman ruang?</h3>
-					<p class="content-desc">Untuk melakukan peminjaman ruang, silahkan login terlebih dahulu. Setelah login, pilih menu "Peminjaman Ruang" dan pilih ruang yang ingin dipinjam.</p>
+					<p class="content-desc">Untuk melakukan peminjaman ruang, silahkan login terlebih dahulu. Setelah login, pilih menu "Tambah Peminjaman" dan isi form peminjaman ruang.</p>
 				</li>
 				<li class="pb-4">
-					<h3>Bagaimana cara melihat jadwal ruang?</h3>
-					<p class="content-desc">Untuk melihat jadwal ruang, silahkan login terlebih dahulu. Setelah login, pilih menu "Jadwal Ruang" dan pilih ruang yang ingin dilihat jadwalnya.</p>
+					<h3>Bagaimana cara melihat jadwal peminjaman ruang keseluruhan?</h3>
+					<p class="content-desc">Untuk melihat jadwal ruang, silahkan login terlebih dahulu. Setelah login, pilih menu "Semua Peminjaman".</p>
+				</li>
+				<li class="pb-4">
+					<h3>Bagaimana cara melihat jadwal peminjaman saya?</h3>
+					<p class="content-desc">Untuk melihat jadwal peminjaman, silahkan login terlebih dahulu. Setelah login, pilih menu "Peminjaman Saya".</p>
 				</li>
 				<li>
-					<h3>Bagaimana cara melihat jadwal peminjaman saya?</h3>
-					<p class="content-desc">Untuk melihat jadwal peminjaman, silahkan login terlebih dahulu. Setelah login, pilih menu "Jadwal Peminjaman" dan pilih ruang yang ingin dilihat jadwal peminjamannya.</p>
+					<h3>Bagaimana bila ingin melihat jadwal peminjaman, namun tidak memiliki akun?</h3>
+					<p class="content-desc">Anda bisa melakukan <a href="/register" class="text-decoration-none text-primary">registrasi</a> atau <a href="/login/guest" class="text-decoration-none text-primary">login sebagai tamu</a> untuk melihat jadwal peminjaman ruang.</p>
 				</li>
 			</ol>
 		</section>
