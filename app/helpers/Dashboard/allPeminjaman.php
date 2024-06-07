@@ -29,9 +29,6 @@ $numEnd = $numStart + count($data['peminjaman']) - 1;
 		<table>
 			<thead>
 				<tr>
-					<?php if ($data['level'] != 3) : ?>
-						<th class="text-center"><input type="checkbox" name="select-all" id="select-all"></th>
-					<?php endif; ?>
 					<th>Nama Kegiatan</th>
 					<th>Pengaju</th>
 					<th>Dibuat</th>
@@ -45,31 +42,38 @@ $numEnd = $numStart + count($data['peminjaman']) - 1;
 			<tbody>
 				<?php if ($data['totalRows'] == 0) : ?>
 					<tr>
-						<td colspan="10" class="text-center">Data tidak ditemukan</td>
+						<td colspan="9" class="text-center">Data tidak ditemukan</td>
 					</tr>
 				<?php endif; ?>
 				<?php foreach ($data['peminjaman'] as $peminjaman) : ?>
 					<tr>
-						<?php if ($data['level'] != 3) : ?>
-							<td class="text-center"><input class="checkbox" type="checkbox" name="<?= $peminjaman['id'] ?>"></td>
-						<?php endif; ?>
-						<td></td>
+						<td><?= $peminjaman['kegiatan'] ?></td>
 						<td><?= $peminjaman['unit'] ?></td>
 						<td><?= $peminjaman['dibuat_tanggal'] ?></td>
 						<td><?= $peminjaman['diperlukan_tanggal'] ?></td>
 						<td><?= $peminjaman['ruang'] ?></td>
-						<td><?= $peminjaman['waktu_mulai'] ?></td>
-						<td><?= $peminjaman['status'] ?></td>
 						<td class="text-center">
-							<a href="user/detail_peminjaman/<?= $peminjaman['id'] ?>" class="text-decoration-none text-primary">
+							<?= $data['list-sesi'][(string) $peminjaman['sesi'] - 1]['namaSesi'] ?>
+						</td>
+						<td class="text-center">
+							<select name="post-status" class="p-2 border-radius-1" onchange="updateStatus('<?= $peminjaman['id_pinjam'] ?>', this.value)" <?= $data['level'] != 1 ? 'disabled' : '' ?>>
+								<option value="1" class="option-post-status" <?= ($peminjaman['status'] == 1) ? 'selected' : '' ?>>Proses Persetujuan BAU</option>
+								<option value="2" class="option-post-status" <?= ($peminjaman['status'] == 2) ? 'selected' : '' ?>>Disetujui</option>
+								<option value="3" class="option-post-status" <?= ($peminjaman['status'] == 3) ? 'selected' : '' ?>>Ditolak</option>
+							</select>
+						</td>
+						<td class="text-center">
+							<a href="user/detail-peminjaman/<?= $peminjaman['id_pinjam'] ?>" class="text-decoration-none text-primary px-1">
 								<i class="fas fa-eye"></i>
 							</a>
 						</td>
-						<td class="text-center">
-							<a href="user/detail_peminjaman/<?= $peminjaman['id'] ?>" class="text-decoration-none text-primary">
-								<i class="fas fa-trash"></i>
-							</a>
-						</td>
+						<?php if ($data['level'] != 3) : ?>
+							<td class="text-center">
+								<a class="text-decoration-none text-primary px-1 cursor-pointer" onclick="deletePeminjaman('<?= $peminjaman['id_pinjam'] ?>')">
+									<i class="fas fa-trash"></i>
+								</a>
+							</td>
+						<?php endif; ?>
 					</tr>
 				<?php endforeach; ?>
 			</tbody>
@@ -85,21 +89,21 @@ $numEnd = $numStart + count($data['peminjaman']) - 1;
 			<!-- Paginate Button Start -->
 			<ul class="d-flex flex-wrap row-gap-5 list-style-none" id="paginate">
 				<?php if ($data['totalHalaman'] != 5 && $data['currPage'] > 3) : ?>
-					<li><a class="p-2 text-decoration-none bg-gray" href="user/all_peminjaman/1">&lt;&lt;</a></li>
-					<li><a class="p-2 text-decoration-none bg-gray" href="user/all_peminjaman/<?= $data['currPage'] - 1 ?>">&lt;</a></li>
+					<li><a class="p-2 text-decoration-none bg-gray" href="user/all-peminjaman/1">&lt;&lt;</a></li>
+					<li><a class="p-2 text-decoration-none bg-gray" href="user/all-peminjaman/<?= $data['currPage'] - 1 ?>">&lt;</a></li>
 				<?php endif; ?>
 
 				<?php if ($data['totalHalaman'] > 1) : ?>
 					<?php for ($i = $startPage; $i <= $endPage; $i++) : ?>
 						<li>
-							<a class="p-2 text-decoration-none <?= $data['currPage'] == $i ? 'curr-page' : 'bg-gray'; ?>" href="user/all_peminjaman/<?= $i ?>"><?= $i ?></a>
+							<a class="p-2 text-decoration-none <?= $data['currPage'] == $i ? 'curr-page' : 'bg-gray'; ?>" href="user/all-peminjaman/<?= $i ?>"><?= $i ?></a>
 						</li>
 					<?php endfor; ?>
 				<?php endif; ?>
 
 				<?php if ($data['totalHalaman'] != 5 && $data['currPage'] < $data['totalHalaman'] - 2) : ?>
-					<li><a class="p-2 text-decoration-none bg-gray" href="user/all_peminjaman/<?= $data['currPage'] + 1; ?>">&gt;</a></li>
-					<li><a class="p-2 text-decoration-none bg-gray" href="user/all_peminjaman/<?= $data['totalHalaman'] ?>">&gt;&gt;</a></li>
+					<li><a class="p-2 text-decoration-none bg-gray" href="user/all-peminjaman/<?= $data['currPage'] + 1; ?>">&gt;</a></li>
+					<li><a class="p-2 text-decoration-none bg-gray" href="user/all-peminjaman/<?= $data['totalHalaman'] ?>">&gt;&gt;</a></li>
 				<?php endif; ?>
 			</ul>
 			<!-- Paginate Button End -->
