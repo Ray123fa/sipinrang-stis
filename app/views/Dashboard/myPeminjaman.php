@@ -25,24 +25,24 @@ $numEnd = $numStart + count($data['peminjaman']) - 1;
 ?>
 <!-- End -->
 
-<main class="bg-gray mx-4">
-	<h3>Peminjaman Saya</h3>
+<main class="mx-4">
+	<h3 class="mb-4">Peminjaman Saya</h3>
 	<div class="wrapper bg-light p-4 my-4">
-		<div class="d-flex flex-wrap gap-2">
-			<button type="submit" id="btn-hapus" class="p-2 bg-danger text-light border-radius-1 cursor-pointer border-none" style="width: 166.48px;" disabled>
-				<i class="fas fa-trash"></i>
-				<span>Hapus Peminjaman</span>
-			</button>
-		</div>
-		<hr class="mt-2">
-
-		<div class="d-flex gap-2 justify-content-between align-items-center pt-2" id="top-table">
-			<select name="entries" id="entries" class="p-2 border-radius-1">
-				<option value="7">7</option>
-				<option value="15">15</option>
-				<option value="30">30</option>
-				<option value="-1">All</option>
-			</select>
+		<div class="d-flex gap-2 justify-content-between align-items-center py-2" id="top-table">
+			<div class="d-flex justify-content-start gap-2" id="filtered">
+				<select name="entries" id="entries" class="p-2 border-radius-1">
+					<option value="7" class="option-entries">7</option>
+					<option value="15" class="option-entries">15</option>
+					<option value="30" class="option-entries">30</option>
+					<option value="-1" class="option-entries">Semua</option>
+				</select>
+				<select name="filter-status" id="filter-status" class="p-2 border-radius-1">
+					<option value="-1" class="option-filter-status">Semua Status</option>
+					<option value="1" class="option-filter-status">Dalam Persetujuan BAU</option>
+					<option value="2" class="option-filter-status">Disetujui</option>
+					<option value="3" class="option-filter-status">Ditolak</option>
+				</select>
+			</div>
 			<input type="text" class="p-2 border-radius-1" name="search" id="search" placeholder="Cari..." value="<?= isset($_SESSION['search_my']) ? $_SESSION['search_my'] : '' ?>">
 		</div>
 
@@ -53,7 +53,6 @@ $numEnd = $numStart + count($data['peminjaman']) - 1;
 					<table>
 						<thead>
 							<tr>
-								<th class="text-center"><input type="checkbox" name="select-all" id="select-all"></th>
 								<th>Nama Kegiatan</th>
 								<th>Dibuat</th>
 								<th>Diperlukan</th>
@@ -66,25 +65,32 @@ $numEnd = $numStart + count($data['peminjaman']) - 1;
 						<tbody>
 							<?php if ($data['totalRows'] == 0) : ?>
 								<tr>
-									<td colspan="10" class="text-center">Data tidak ditemukan</td>
+									<td colspan="8" class="text-center">Data tidak ditemukan</td>
 								</tr>
 							<?php endif; ?>
 							<?php foreach ($data['peminjaman'] as $peminjaman) : ?>
 								<tr>
-									<td class="text-center"><input class="checkbox" type="checkbox" name="<?= $peminjaman['id'] ?>"></td>
 									<td><?= $peminjaman['kegiatan'] ?></td>
-									<td><?= $peminjaman['dibuat_tanggal'] ?></td>
-									<td><?= $peminjaman['diperlukan_tanggal'] ?></td>
-									<td><?= $peminjaman['ruang'] ?></td>
-									<td><?= $peminjaman['sesi'] ?></td>
-									<td><?= $peminjaman['status'] ?></td>
+									<td class="text-center"><?= $peminjaman['dibuat_tanggal'] ?></td>
+									<td class="text-center"><?= $peminjaman['diperlukan_tanggal'] ?></td>
+									<td class="text-center"><?= $peminjaman['ruang'] ?></td>
+									<td class="text-center">
+										<?= $data['list-sesi'][(string) $peminjaman['sesi'] - 1]['namaSesi'] ?>
+									</td>
+									<td class="text-center">
+										<select name="post-status" class="p-2 border-radius-1" onchange="updateStatus('<?= $peminjaman['id_pinjam'] ?>', this.value)" <?= $data['level'] != 1 ? 'disabled' : '' ?>>
+											<option value="1" class="option-post-status" <?= ($peminjaman['status'] == 1) ? 'selected' : '' ?>>Proses Persetujuan BAU</option>
+											<option value="2" class="option-post-status" <?= ($peminjaman['status'] == 2) ? 'selected' : '' ?>>Disetujui</option>
+											<option value="3" class="option-post-status" <?= ($peminjaman['status'] == 3) ? 'selected' : '' ?>>Ditolak</option>
+										</select>
+									</td>
 									<td class="text-center">
 										<a href="user/detail-peminjaman/<?= $peminjaman['id_pinjam'] ?>" class="text-decoration-none text-primary px-1">
 											<i class="fas fa-eye"></i>
 										</a>
 									</td>
 									<td class="text-center">
-										<a href="user/detail-peminjaman/<?= $peminjaman['id_pinjam'] ?>" class="text-decoration-none text-primary px-1">
+										<a class="text-decoration-none text-primary px-1 cursor-pointer" onclick="deletePeminjaman('<?= $peminjaman['id_pinjam'] ?>')">
 											<i class="fas fa-trash"></i>
 										</a>
 									</td>

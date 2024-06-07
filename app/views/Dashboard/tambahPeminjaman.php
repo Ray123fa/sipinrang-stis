@@ -1,7 +1,7 @@
 <main>
 	<h2>Tambah Peminjaman</h2>
 
-	<section class="mt-4" id="profile-information">
+	<section class="mt-4" id="tambah-peminjaman">
 		<form class="box shadow bg-light" action="user/do-tambah-peminjaman" method="POST" style="max-width:40rem">
 			<?php Flasher::flash("tambah-peminjaman") ?>
 

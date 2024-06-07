@@ -1,3 +1,3 @@
 <main>
-	<h2>Selamat Datang, <?= $data['user'] ?></h2>
+	<h2>Selamat Datang, <?= $data['unit'] ?></h2>
 </main>
