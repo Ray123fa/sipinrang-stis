@@ -41,12 +41,12 @@ class Login extends Controller
 		];
 
 		$status = $this->call->login($data);
-		if ($status) {
+		if ($status === true) {
 			$_SESSION['user'] = $data['username'];
 			if (isset($_SESSION['link'])) {
 				$this->redirect($_SESSION['link']);
 			} else {
-				$this->redirect('user'); // dashboard
+				$this->redirect('user');
 			}
 		} else {
 			Flasher::setFlash('Username atau password salah!', 'warning');

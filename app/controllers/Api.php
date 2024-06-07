@@ -41,7 +41,8 @@ class Api extends Controller
 
 		$start = 0;
 		$limit = (int) $_POST['limit'];
-		$totalRows = (int) $this->model('PeminjamanModel')->countSearchAllPeminjaman($search);
+		$status = (int) $_POST['status'];
+		$totalRows = (int) $this->model('PeminjamanModel')->countSearchAllPeminjaman($search, $status);
 
 		if ($limit == -1) {
 			$limit = $totalRows;
@@ -51,7 +52,9 @@ class Api extends Controller
 		$this->data['totalHalaman'] = ceil($totalRows / $limit);
 		$this->data['numStart'] = ($totalRows > 0) ? $start + 1 : 0;
 		$this->data['currPage'] = 1;
-		$this->data['peminjaman'] = $this->model('PeminjamanModel')->searchAllPeminjaman($search, $start, $limit);
+		$this->data['peminjaman'] = $this->model('PeminjamanModel')->searchAllPeminjaman($search, $start, $limit, $status);
+
+		$this->data['list-sesi'] = $this->model('SesiModel')->getAll();
 
 		$this->helper('Dashboard/allPeminjaman', $this->data);
 	}
@@ -67,7 +70,8 @@ class Api extends Controller
 
 		$start = 0;
 		$limit = (int) $_POST['limit'];
-		$totalRows = (int) $this->model('PeminjamanModel')->countSearchMyPeminjaman($search, $this->unit);
+		$status = (int) $_POST['status'];
+		$totalRows = (int) $this->model('PeminjamanModel')->countSearchMyPeminjaman($search, $this->unit, $status);
 
 		if ($limit == -1) {
 			$limit = $totalRows;
@@ -77,7 +81,9 @@ class Api extends Controller
 		$this->data['totalHalaman'] = ceil($totalRows / $limit);
 		$this->data['numStart'] = ($totalRows > 0) ? $start + 1 : 0;
 		$this->data['currPage'] = 1;
-		$this->data['peminjaman'] = $this->model('PeminjamanModel')->searchMyPeminjaman($search, $start, $limit, $this->unit);
+		$this->data['peminjaman'] = $this->model('PeminjamanModel')->searchMyPeminjaman($search, $start, $limit, $this->unit, $status);
+
+		$this->data['list-sesi'] = $this->model('SesiModel')->getAll();
 
 		$this->helper('Dashboard/myPeminjaman', $this->data);
 	}
@@ -86,10 +92,20 @@ class Api extends Controller
 	public function get_avail_ruang($tgl = null, $sesi = null)
 	{
 		if (is_null($tgl) || is_null($sesi)) {
-			$this->redirect('user/tambah-peminjaman');
+			$this->redirect("forbidden");
 		}
 
 		$ruang = $this->model('RuangModel')->getAvailRuang($tgl, $sesi);
 		echo json_encode($ruang);
+	}
+
+	// Update Status Peminjaman
+	public function update_status_peminjaman($id, $status)
+	{
+		if ($this->level != 1) {
+			$this->redirect('forbidden');
+		}
+
+		$this->model('PeminjamanModel')->updateStatusPeminjaman($id, $status);
 	}
 }
