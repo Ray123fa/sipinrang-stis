@@ -9,6 +9,24 @@ class User extends Controller
 
 	public function __construct()
 	{
+		// Session Timeout
+		$inactive = 7200;
+		if (isset($_SESSION['timeout'])) {
+			$session_life = time() - $_SESSION['timeout'];
+			if ($session_life > $inactive) {
+				session_unset();
+				session_destroy();
+				$this->redirect('login');
+			}
+		}
+		$_SESSION['timeout'] = time();
+
+		// Check remember me
+		if (isset($_COOKIE['username']) && !isset($_SESSION['user'])) {
+			$_SESSION['user'] = $_COOKIE['username'];
+		}
+
+		// Check if user is logged in
 		$_SESSION['link'] = explode("=", $_SERVER['QUERY_STRING'])[1];
 		if (!isset($_SESSION['user'])) {
 			$this->redirect('login');

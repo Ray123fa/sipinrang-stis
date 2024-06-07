@@ -37,7 +37,8 @@ class Login extends Controller
 
 		$data = [
 			'username' => strtolower($_POST['username']),
-			'password' => $_POST['pass']
+			'password' => $_POST['pass'],
+			'remember' => isset($_POST['remember-me']) ? true : false
 		];
 
 		$status = $this->call->login($data);
