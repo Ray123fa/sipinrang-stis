@@ -10,13 +10,15 @@
 				<a href="user" class="w-full">Beranda</a>
 			</a>
 		</li>
-		<li class="d-flex align-items-center p-5px border-radius-1 mb-2 <?= ($data['title'] == 'Tambah Peminjaman') ? 'active' : ''; ?>">
-			<a href="user/tambah-peminjaman">
-				<i class="fas fa-plus mr-2"></i>
-				<a href="user/tambah-peminjaman" class="w-full">Tambah Peminjaman</a>
-			</a>
-		</li>
-		<?php if ($data['level'] != 2) : ?>
+		<?php if ($data['level'] != 3) : ?>
+			<li class="d-flex align-items-center p-5px border-radius-1 mb-2 <?= ($data['title'] == 'Tambah Peminjaman') ? 'active' : ''; ?>">
+				<a href="user/tambah-peminjaman">
+					<i class="fas fa-plus mr-2"></i>
+					<a href="user/tambah-peminjaman" class="w-full">Tambah Peminjaman</a>
+				</a>
+			</li>
+		<?php endif; ?>
+		<?php if ($data['level'] == 1) : ?>
 			<li class="d-flex align-items-center p-5px border-radius-1 mb-2 <?= ($data['title'] == 'Daftar Pengguna') ? 'active' : ''; ?>">
 				<a href="user/daftar-pengguna">
 					<i class="fas fa-list mr-2"></i>
@@ -30,12 +32,14 @@
 				<a href="user/all-peminjaman" class="w-full">Semua Peminjaman</a>
 			</a>
 		</li>
-		<li class="d-flex align-items-center p-5px border-radius-1 mb-2 <?= ($data['title'] == 'Peminjaman Saya') ? 'active' : ''; ?>">
-			<a href="user/my-peminjaman">
-				<i class="fas fa-list mr-2"></i>
-				<a href="user/my-peminjaman" class="w-full">Peminjaman Saya</a>
-			</a>
-		</li>
+		<?php if ($data['level'] != 3) : ?>
+			<li class="d-flex align-items-center p-5px border-radius-1 mb-2 <?= ($data['title'] == 'Peminjaman Saya') ? 'active' : ''; ?>">
+				<a href="user/my-peminjaman">
+					<i class="fas fa-list mr-2"></i>
+					<a href="user/my-peminjaman" class="w-full">Peminjaman Saya</a>
+				</a>
+			</li>
+		<?php endif; ?>
 	</ul>
 </aside>
 <!-- Sidebar End -->

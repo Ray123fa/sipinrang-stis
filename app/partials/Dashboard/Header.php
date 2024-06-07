@@ -46,7 +46,9 @@
 		<!-- Nav End -->
 
 		<ul class="d-none profile-dropdown-list list-style-none py-2">
-			<li class="px-4 mb-2 border-radius-1"><a class="d-block text-decoration-none" href="user/profile">Edit Profile</a></li>
+			<?php if ($data['level'] != 3) : ?>
+				<li class="px-4 mb-2 border-radius-1"><a class="d-block text-decoration-none" href="user/profile">Edit Profile</a></li>
+			<?php endif; ?>
 			<li class="px-4 border-radius-1"><a class="d-block text-decoration-none" href="user/logout">Logout</a></li>
 		</ul>
 	</header>

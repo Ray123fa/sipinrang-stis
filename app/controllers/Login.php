@@ -24,7 +24,7 @@ class Login extends Controller
 
 		$this->partial('Account/Header', $data);
 		$this->view('login');
-		$this->partial('Account/Footer');
+		$this->partial('Account/Footer', $data);
 	}
 
 	public function do()
@@ -52,6 +52,25 @@ class Login extends Controller
 		} else {
 			Flasher::setFlash('Username atau password salah!', 'warning');
 			$this->redirect('login');
+		}
+	}
+
+	public function guest()
+	{
+		if (!session_id()) {
+			session_start();
+		}
+
+		$data = [
+			'username' => 'guest',
+			'password' => 'gueststis',
+			'remember' => false
+		];
+
+		$status = $this->call->login($data);
+		if ($status === true) {
+			$_SESSION['user'] = $data['username'];
+			$this->redirect('user');
 		}
 	}
 }

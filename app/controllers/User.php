@@ -73,6 +73,10 @@ class User extends Controller
 	// Profil
 	public function profile()
 	{
+		if ($this->level == 3) {
+			$this->redirect('forbidden');
+		}
+
 		if (isset($_SESSION['search_all'])) {
 			unset($_SESSION['search_all']);
 		}
@@ -204,6 +208,10 @@ class User extends Controller
 	// Peminjaman Saya
 	public function my_peminjaman($page = 1)
 	{
+		if ($this->level == 3) {
+			$this->redirect('forbidden');
+		}
+
 		if (isset($_SESSION['search_all'])) {
 			unset($_SESSION['search_all']);
 		}
@@ -306,6 +314,10 @@ class User extends Controller
 	// Create Peminjaman
 	public function tambah_peminjaman()
 	{
+		if ($this->level == 3) {
+			$this->redirect('forbidden');
+		}
+
 		if (isset($_SESSION['search_all'])) {
 			unset($_SESSION['search_all']);
 		}
@@ -417,7 +429,7 @@ class User extends Controller
 	// Daftar Pengguna
 	public function daftar_pengguna()
 	{
-		if ($this->level == 2) {
+		if ($this->level != 1) {
 			$this->redirect('forbidden');
 		}
 
