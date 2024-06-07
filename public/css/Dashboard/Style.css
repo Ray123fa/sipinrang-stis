@@ -65,6 +65,7 @@ main {
   left: 12rem;
   right: 0;
   margin: 1rem;
+  padding-bottom: 1rem;
   transition: all 0.3s;
   z-index: 0;
 }
@@ -148,6 +149,10 @@ main {
 
   h1.sidebar-brand {
     font-size: 16px;
+  }
+
+  #filtered {
+    flex-direction: column;
   }
 
   #user {

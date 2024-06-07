@@ -1,57 +1,10 @@
-const allSelect = document.getElementById("select-all");
-const checkboxes = document.querySelectorAll(".checkbox");
-const btnHapus = document.getElementById("btn-hapus");
-
-if (allSelect != null) {
-  allSelect.addEventListener("click", () => {
-    if (allSelect.checked) {
-      btnHapus.disabled = false;
-      checkboxes.forEach((checkbox) => {
-        checkbox.checked = true;
-      });
-    } else {
-      checkboxes.forEach((checkbox) => {
-        checkbox.checked = false;
-      });
-      btnHapus.disabled = true;
-    }
-  });
-
-  checkboxes.forEach((checkbox) => {
-    checkbox.addEventListener("click", () => {
-      let count = 0;
-      checkboxes.forEach((checkbox) => {
-        if (checkbox.checked) {
-          count++;
-        }
-      });
-
-      if (count > 0) {
-        btnHapus.disabled = false;
-      } else {
-        btnHapus.disabled = true;
-      }
-
-      if (count == checkboxes.length) {
-        allSelect.checked = true;
-      } else {
-        allSelect.checked = false;
-      }
-    });
-  });
-}
-
-const option = document.querySelectorAll("option");
-if (sessionStorage.getItem("entries")) {
-  option.forEach((opt) => {
-    if (opt.value == sessionStorage.getItem("entries")) {
-      opt.selected = true;
-    }
-  });
-}
 const entries = document.getElementById("entries");
-entries.addEventListener("change", () => {
+const filterStatus = document.getElementById("filter-status");
+
+function sendLimitStatus() {
   sessionStorage.setItem("entries", entries.value);
+  sessionStorage.setItem("filterStatus", filterStatus.value);
+
   const xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function () {
     if (xhr.readyState == 4 && xhr.status == 200) {
@@ -62,12 +15,31 @@ entries.addEventListener("change", () => {
   };
   xhr.open("POST", `user/my-peminjaman`, true);
   xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-  xhr.send(`limit=${entries.value}`);
-});
+  xhr.send(`limit=${entries.value}&status=${filterStatus.value}`);
+}
+
+const optionEntries = document.querySelectorAll(".option-entries");
+if (sessionStorage.getItem("entries")) {
+  optionEntries.forEach((opt) => {
+    if (opt.value == sessionStorage.getItem("entries")) {
+      opt.selected = true;
+    }
+  });
+}
+entries.addEventListener("change", sendLimitStatus);
+
+const optionFilterStatus = document.querySelectorAll(".option-filter-status");
+if (sessionStorage.getItem("filterStatus")) {
+  optionFilterStatus.forEach((opt) => {
+    if (opt.value == sessionStorage.getItem("filterStatus")) {
+      opt.selected = true;
+    }
+  });
+}
+filterStatus.addEventListener("change", sendLimitStatus);
 
 const search = document.getElementById("search");
 search.addEventListener("keyup", () => {
-  console.log("my");
   const xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function () {
     if (xhr.readyState == 4 && xhr.status == 200) {
@@ -79,9 +51,26 @@ search.addEventListener("keyup", () => {
 
   const data = new URLSearchParams();
   data.append("limit", entries.value);
+  data.append("status", filterStatus.value);
   data.append("search", search.value);
 
   xhr.open("POST", `api/search-my-peminjaman`, true);
   xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
   xhr.send(data);
 });
+
+function deletePeminjaman(idpinjam) {
+  const confirmation = confirm("Apakah anda yakin ingin menghapus data ini?");
+  confirmation ? (window.location.href = `user/do-delete-peminjaman/${idpinjam}`) : null;
+}
+
+function updateStatus(id, status) {
+  const xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState == 4 && xhr.status == 200) {
+      window.location.reload();
+    }
+  };
+  xhr.open("GET", `api/update-status-peminjaman/${id}/${status}`, true);
+  xhr.send();
+}

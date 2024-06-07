@@ -54,4 +54,6 @@ function getAvailRuang() {
 
   xhr.open("GET", `api/get-avail-ruang/${tglPerlu.value}/${sesi.value}`, true);
   xhr.send();
+
+  $("#ruang").select2();
 }

@@ -68,8 +68,14 @@
 .flex-wrap {
   flex-wrap: wrap;
 }
+.flex-0.5 {
+  flex: 0.5;
+}
 
 /* Justify Content */
+.justify-content-start {
+  justify-content: flex-start;
+}
 .justify-content-between {
   justify-content: space-between;
 }
