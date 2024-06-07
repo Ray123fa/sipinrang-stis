@@ -22,8 +22,10 @@ class User extends Controller
 		$_SESSION['timeout'] = time();
 
 		// Check remember me
-		if (isset($_COOKIE['username']) && !isset($_SESSION['user'])) {
-			$_SESSION['user'] = $_COOKIE['username'];
+		if (isset($_COOKIE['remember_me']) && !isset($_SESSION['user'])) {
+			$cookie = $_COOKIE['remember_me'];
+			$cookie = json_decode(CookieHandler::decrypt($cookie, 'REMEMBER_ME'), true);
+			$_SESSION['user'] = $cookie['username'];
 		}
 
 		// Check if user is logged in

@@ -12,7 +12,8 @@ class AccountModel
 	public function login($data)
 	{
 		if ($data['remember']) {
-			setcookie('username', $data['username'], time() + 60 * 60 * 24 * 30, '/'); // 30 days
+			$cookie = CookieHandler::encrypt($data['username'], 'REMEMBER_ME');
+			setcookie('remember_me', $cookie, time() + 60 * 60 * 24 * 30, '/');
 		}
 
 		$this->db->query('SELECT * FROM ' . $this->table . ' WHERE username = :username');
