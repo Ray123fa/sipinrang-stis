@@ -51,9 +51,9 @@ $numEnd = $numStart + count($data['users']) - 1;
 						<td class="text-center"><?= $user['email'] ?></td>
 						<td class="text-center"><?= $user['unit'] ?></td>
 						<td class="text-center"><?= $user['level'] ?></td>
-						<td class="text-center"><?= $user['chat_id'] ?></td>
+						<td class="text-center"><?= ($user['chat_id'] == '') ? '-' : $user['chat_id'] ?></td>
 						<td class="text-center">
-							<a class="text-decoration-none text-primary px-1 cursor-pointer" href="#">
+							<a class="text-decoration-none text-danger px-1 cursor-pointer" href="#">
 								<i class="fas fa-trash"></i>
 							</a>
 						</td>

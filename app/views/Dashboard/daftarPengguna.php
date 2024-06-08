@@ -57,20 +57,20 @@ $numEnd = $numStart + count($data['users']) - 1;
 							</tr>
 						</thead>
 						<tbody>
-							<!-- <?php if ($data['totalRows'] == 0) : ?>
+							<?php if ($data['totalRows'] == 0) : ?>
 								<tr>
 									<td colspan="6" class="text-center">Data tidak ditemukan</td>
 								</tr>
-							<?php endif; ?> -->
+							<?php endif; ?>
 							<?php foreach ($data['users'] as $user) : ?>
 								<tr>
 									<td><?= $user['username'] ?></td>
 									<td class="text-center"><?= $user['email'] ?></td>
 									<td class="text-center"><?= $user['unit'] ?></td>
 									<td class="text-center"><?= $user['level'] ?></td>
-									<td class="text-center"><?= $user['chat_id'] ?></td>
+									<td class="text-center"><?= ($user['chat_id'] == '') ? '-' : $user['chat_id'] ?></td>
 									<td class="text-center">
-										<a class="text-decoration-none text-primary px-1 cursor-pointer" href="#">
+										<a class="text-decoration-none text-danger px-1 cursor-pointer" href="#">
 											<i class="fas fa-trash"></i>
 										</a>
 									</td>

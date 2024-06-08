@@ -90,7 +90,7 @@ $numEnd = $numStart + count($data['peminjaman']) - 1;
 										</a>
 									</td>
 									<td class="text-center">
-										<a class="text-decoration-none text-primary px-1 cursor-pointer" onclick="deletePeminjaman('<?= $peminjaman['id_pinjam'] ?>')">
+										<a class="text-decoration-none text-danger px-1 cursor-pointer" onclick="deletePeminjaman('<?= $peminjaman['id_pinjam'] ?>')">
 											<i class="fas fa-trash"></i>
 										</a>
 									</td>

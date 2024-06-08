@@ -256,6 +256,9 @@
 .text-light {
   color: var(--light);
 }
+.text-danger {
+  color: var(--danger);
+}
 
 /* Font */
 .fw-bold {
