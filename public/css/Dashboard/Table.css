@@ -10,7 +10,3 @@ td {
   border: 1px solid var(--secondary);
   padding: 0.25rem 0.5rem;
 }
-
-#btn-hapus:disabled {
-  cursor: not-allowed;
-}
