@@ -49,7 +49,7 @@ class UserModel
 
 	public function countSearchUser($search)
 	{
-		$this->db->query('SELECT * FROM ' . $this->table . ' WHERE level <> 3 AND (username LIKE :search OR email LIKE :search OR unit LIKE :search OR level LIKE :search)');
+		$this->db->query('SELECT * FROM ' . $this->table . ' WHERE level <> 3 AND (username LIKE :search OR email LIKE :search OR unit LIKE :search OR level LIKE :search OR chat_id LIKE :search)');
 		$this->db->bind(':search', "%$search%");
 		$this->db->execute();
 		$row = $this->db->rowCount();
@@ -59,7 +59,7 @@ class UserModel
 
 	public function searchUser($search, $start, $limit)
 	{
-		$this->db->query('SELECT * FROM ' . $this->table . ' WHERE level <> 3 AND (username LIKE :search OR email LIKE :search OR unit LIKE :search OR level LIKE :search) LIMIT :start, :limit');
+		$this->db->query('SELECT * FROM ' . $this->table . ' WHERE level <> 3 AND (username LIKE :search OR email LIKE :search OR unit LIKE :search OR level LIKE :search OR chat_id LIKE :search) LIMIT :start, :limit');
 		$this->db->bind(':search', "%$search%");
 		$this->db->bind(':start', $start);
 		$this->db->bind(':limit', $limit);
