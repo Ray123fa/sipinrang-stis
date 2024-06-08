@@ -137,7 +137,7 @@ class User extends Controller
 		}
 
 		$this->data['title'] = 'Semua Peminjaman';
-		$this->data['css'][2] = 'Dashboard/Peminjaman.css';
+		$this->data['css'][2] = 'Dashboard/Table.css';
 		$this->data['js'][1] = 'Dashboard/allPeminjaman.js';
 
 		// Pagination
@@ -217,7 +217,7 @@ class User extends Controller
 		}
 
 		$this->data['title'] = 'Peminjaman Saya';
-		$this->data['css'][2] = 'Dashboard/Peminjaman.css';
+		$this->data['css'][2] = 'Dashboard/Table.css';
 		$this->data['js'][1] = 'Dashboard/myPeminjaman.js';
 
 		$start = 0;
@@ -427,7 +427,7 @@ class User extends Controller
 	}
 
 	// Daftar Pengguna
-	public function daftar_pengguna()
+	public function daftar_pengguna($page = 1)
 	{
 		if ($this->level != 1) {
 			$this->redirect('forbidden');
@@ -441,12 +441,62 @@ class User extends Controller
 		}
 
 		$this->data['title'] = 'Daftar Pengguna';
-		$this->data['users'] = $this->model('UserModel')->getAll();
+		$this->data['css'][2] = 'Dashboard/Table.css';
+		$this->data['js'][1] = 'Dashboard/daftarPengguna.js';
 
-		$this->partial('Dashboard/Header', $this->data);
-		$this->partial('Dashboard/Sidebar', $this->data);
-		$this->view('Dashboard/daftarPengguna', $this->data);
-		$this->partial('Dashboard/Footer', $this->data);
+		// Pagination
+		$start = 0;
+		$limit = 7;
+
+		if (isset($_POST['limit-user'])) {
+			$limit = (int) $_POST['limit-user'];
+			$_SESSION['limit-user'] = $limit;
+		}
+		if (isset($_SESSION['limit-user'])) {
+			$limit = (int) $_SESSION['limit-user'];
+		}
+
+		$totalRows = (int) $this->model("UserModel")->countGetAll();
+		if ($limit == -1) {
+			$limit = $totalRows;
+		}
+
+		$totalHalaman = ceil($totalRows / $limit);
+		$this->data['totalRows'] = $totalRows;
+		$this->data['totalHalaman'] = $totalHalaman;
+
+		if ($page < 1) {
+			$this->redirect('user/daftar-pengguna/1');
+		} else if ($page > $totalHalaman && $totalHalaman != 0) {
+			$this->redirect('user/daftar-pengguna/' . $totalHalaman);
+		}
+
+		if ($page > 1) {
+			$start = ($limit * $page) - $limit;
+		}
+
+		$this->data['numStart'] = ($totalRows > 0) ? $start + 1 : 0;
+		$this->data['currPage'] = $page;
+		$this->data['users'] = $this->model('UserModel')->getAllByLimit($start, $limit);
+
+		if (isset($_SESSION['search_user'])) {
+			$search = $_SESSION['search_user'];
+			$totalRows = (int) $this->model('UserModel')->countSearchUser($search);
+			$totalHalaman = ceil($totalRows / $limit);
+			$this->data['totalRows'] = $totalRows;
+			$this->data['totalHalaman'] = $totalHalaman;
+			$this->data['numStart'] = ($totalRows > 0) ? $start + 1 : 0;
+			$this->data['users'] = $this->model('UserModel')->searchUser($search, $start, $limit);
+		}
+
+		if (isset($_POST['limit-user'])) {
+			$this->helper('Dashboard/daftarPengguna', $this->data);
+		} else {
+			$this->partial('Dashboard/Header', $this->data);
+			$this->partial('Dashboard/Sidebar', $this->data);
+			$this->view('Dashboard/daftarPengguna', $this->data);
+			$this->partial('Dashboard/Footer', $this->data);
+		}
 	}
 
 	// Logout

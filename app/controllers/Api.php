@@ -88,6 +88,32 @@ class Api extends Controller
 		$this->helper('Dashboard/myPeminjaman', $this->data);
 	}
 
+	public function search_user()
+	{
+		if (!isset($_POST['search']) || !isset($_POST['limit-user'])) {
+			$this->redirect('user/daftar-pengguna');
+		}
+
+		$search = $_POST['search'];
+		$_SESSION['search_user'] = $search;
+
+		$start = 0;
+		$limit = (int) $_POST['limit-user'];
+		$totalRows = (int) $this->model('UserModel')->countSearchUser($search);
+
+		if ($limit == -1) {
+			$limit = $totalRows;
+		}
+
+		$this->data['totalRows'] = $totalRows;
+		$this->data['totalHalaman'] = ceil($totalRows / $limit);
+		$this->data['numStart'] = ($totalRows > 0) ? $start + 1 : 0;
+		$this->data['currPage'] = 1;
+		$this->data['users'] = $this->model('UserModel')->searchUser($search, $start, $limit);
+
+		$this->helper('Dashboard/daftarPengguna', $this->data);
+	}
+
 	// Get Ruang Available
 	public function get_avail_ruang($tgl = null, $sesi = null)
 	{

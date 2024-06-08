@@ -26,7 +26,43 @@ class UserModel
 
 	public function getAll()
 	{
-		$this->db->query('SELECT * FROM ' . $this->table);
+		$this->db->query('SELECT * FROM ' . $this->table . ' WHERE level <> 3');
+		$row = $this->db->resultSet();
+
+		return $row;
+	}
+
+	public function countGetAll()
+	{
+		return count($this->getAll());
+	}
+
+	public function getAllByLimit($start, $limit)
+	{
+		$this->db->query('SELECT * FROM ' . $this->table . ' WHERE level <> 3 LIMIT :start, :limit');
+		$this->db->bind(':start', $start);
+		$this->db->bind(':limit', $limit);
+		$row = $this->db->resultSet();
+
+		return $row;
+	}
+
+	public function countSearchUser($search)
+	{
+		$this->db->query('SELECT * FROM ' . $this->table . ' WHERE level <> 3 AND (username LIKE :search OR email LIKE :search OR unit LIKE :search OR level LIKE :search)');
+		$this->db->bind(':search', "%$search%");
+		$this->db->execute();
+		$row = $this->db->rowCount();
+
+		return $row;
+	}
+
+	public function searchUser($search, $start, $limit)
+	{
+		$this->db->query('SELECT * FROM ' . $this->table . ' WHERE level <> 3 AND (username LIKE :search OR email LIKE :search OR unit LIKE :search OR level LIKE :search) LIMIT :start, :limit');
+		$this->db->bind(':search', "%$search%");
+		$this->db->bind(':start', $start);
+		$this->db->bind(':limit', $limit);
 		$row = $this->db->resultSet();
 
 		return $row;
