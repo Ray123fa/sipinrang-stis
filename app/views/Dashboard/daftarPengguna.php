@@ -67,10 +67,16 @@ $numEnd = $numStart + count($data['users']) - 1;
 									<td><?= $user['username'] ?></td>
 									<td class="text-center"><?= $user['email'] ?></td>
 									<td class="text-center"><?= $user['unit'] ?></td>
-									<td class="text-center"><?= $user['level'] ?></td>
+									<td class="text-center">
+										<select class="p-2 border-radius-1" name="level" id="level" <?= ($user['level'] < 2) ? 'disabled' : '' ?>>
+											<option value="1" <?= ($user['level'] == 1) ? 'selected' : (($data['level'] == 1) ? '' : 'disabled'); ?>>Superadmin</option>
+											<option value="2" <?= ($user['level'] == 2) ? 'selected' : '' ?>>Admin</option>
+											<option value="3" <?= ($user['level'] == 3) ? 'selected' : '' ?>>User</option>
+										</select>
+									</td>
 									<td class="text-center"><?= ($user['chat_id'] == '') ? '-' : $user['chat_id'] ?></td>
 									<td class="text-center">
-										<a class="text-decoration-none text-danger px-1 cursor-pointer" href="#">
+										<a class="text-decoration-none text-danger px-1 cursor-pointer" href="user/daftar-pengguna/#">
 											<i class="fas fa-trash"></i>
 										</a>
 									</td>
