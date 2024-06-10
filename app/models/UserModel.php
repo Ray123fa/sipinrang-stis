@@ -26,7 +26,7 @@ class UserModel
 
 	public function getAll()
 	{
-		$this->db->query('SELECT * FROM ' . $this->table . ' WHERE level <> 3');
+		$this->db->query('SELECT * FROM ' . $this->table . ' WHERE level <> 4');
 		$row = $this->db->resultSet();
 
 		return $row;
@@ -39,7 +39,7 @@ class UserModel
 
 	public function getAllByLimit($start, $limit)
 	{
-		$this->db->query('SELECT * FROM ' . $this->table . ' WHERE level <> 3 LIMIT :start, :limit');
+		$this->db->query('SELECT * FROM ' . $this->table . ' WHERE level <> 4 LIMIT :start, :limit');
 		$this->db->bind(':start', $start);
 		$this->db->bind(':limit', $limit);
 		$row = $this->db->resultSet();
@@ -49,7 +49,7 @@ class UserModel
 
 	public function countSearchUser($search)
 	{
-		$this->db->query('SELECT * FROM ' . $this->table . ' WHERE level <> 3 AND (username LIKE :search OR email LIKE :search OR unit LIKE :search OR level LIKE :search OR chat_id LIKE :search)');
+		$this->db->query('SELECT * FROM ' . $this->table . ' WHERE level <> 4 AND (username LIKE :search OR email LIKE :search OR unit LIKE :search OR level LIKE :search OR chat_id LIKE :search)');
 		$this->db->bind(':search', "%$search%");
 		$this->db->execute();
 		$row = $this->db->rowCount();
@@ -59,7 +59,7 @@ class UserModel
 
 	public function searchUser($search, $start, $limit)
 	{
-		$this->db->query('SELECT * FROM ' . $this->table . ' WHERE level <> 3 AND (username LIKE :search OR email LIKE :search OR unit LIKE :search OR level LIKE :search OR chat_id LIKE :search) LIMIT :start, :limit');
+		$this->db->query('SELECT * FROM ' . $this->table . ' WHERE level <> 4 AND (username LIKE :search OR email LIKE :search OR unit LIKE :search OR level LIKE :search OR chat_id LIKE :search) LIMIT :start, :limit');
 		$this->db->bind(':search', "%$search%");
 		$this->db->bind(':start', $start);
 		$this->db->bind(':limit', $limit);
@@ -102,6 +102,15 @@ class UserModel
 		$row = $this->db->single();
 
 		return $row['level'];
+	}
+
+	public function getChatIdByUsername($username)
+	{
+		$this->db->query('SELECT chat_id FROM ' . $this->table . ' WHERE username = :username');
+		$this->db->bind(':username', $username);
+		$row = $this->db->single();
+
+		return $row['chat_id'];
 	}
 
 	public function getProfileImgPath($username)
@@ -204,15 +213,42 @@ class UserModel
 
 	public function addChatID($username, $chatID)
 	{
-		$this->db->query('UPDATE ' . $this->table . ' SET chat_id = :chat_id WHERE username = :username');
-		$this->db->bind(':chat_id', $chatID);
+		$this->db->query('SELECT chat_id FROM ' . $this->table . ' WHERE username = :username');
+		$this->db->bind(':username', $username);
+		$row = $this->db->single();
+
+		if ($row['chat_id'] != null) {
+			if ($row['chat_id'] == $chatID) {
+				$msg = "Akun Sipinrang ini telah ditautkan dengan akun telegram ini sebelumnya.\n";
+			} else {
+				$msg = "Akun Sipinrang telah ditautkan dengan akun telegram lain.\n";
+				$msg .= "Gunakan perintah /disconnect untuk memutuskan tautan akun telegram sebelumnya.\n";
+			}
+			return $msg;
+		} else {
+			$this->db->query('UPDATE ' . $this->table . ' SET chat_id = :chat_id WHERE username = :username');
+			$this->db->bind(':chat_id', $chatID);
+			$this->db->bind(':username', $username);
+			$this->db->execute();
+
+			if ($this->db->rowCount() > 0) {
+				return "Akun telegram berhasil dihubungkan dengan akun Sipinrang.";
+			} else {
+				return "Gagal menghubungkan akun telegram dengan akun Sipinrang.";
+			}
+		}
+	}
+
+	public function removeChatID($username)
+	{
+		$this->db->query('UPDATE ' . $this->table . ' SET chat_id = NULL WHERE username = :username');
 		$this->db->bind(':username', $username);
 		$this->db->execute();
 
 		if ($this->db->rowCount() > 0) {
-			return true;
+			return "Akun telegram berhasil diputuskan dari akun Sipinrang.";
 		} else {
-			return false;
+			return "Gagal memutuskan tautan akun telegram dengan akun Sipinrang.";
 		}
 	}
 }
