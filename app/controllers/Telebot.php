@@ -19,7 +19,7 @@ class Telebot extends Controller
 	public function index()
 	{
 		$this->bot->command("start", function ($ctx) {
-			$respons = "Halo, saya bot peminjaman ruang di STIS. Silahkan gunakan perintah /help untuk melihat daftar perintah yang tersedia.";
+			$respons = "Halo, saya bot peminjaman ruang di STIS.\nSilahkan gunakan perintah /help untuk melihat daftar perintah yang tersedia.";
 
 			$opt = [
 				"parse_mode" => "Markdown",
@@ -29,11 +29,12 @@ class Telebot extends Controller
 		});
 
 		$this->bot->command("help", function ($ctx) {
-			$respons = "Berikut adalah daftar perintah yang tersedia:\n";
+			$respons = "Berikut adalah daftar perintah yang tersedia:\n\n";
 			$respons .= "/start - Menampilkan pesan selamat datang\n";
 			$respons .= "/help - Menampilkan daftar perintah yang tersedia\n";
 			$respons .= "/cekstatus idpinjam - Cek status peminjaman ruang\n";
-			$respons .= "/connect username_password - Menghubungkan akun Telegram dengan akun STIS\n";
+			$respons .= "/connect username_password - Menghubungkan akun Telegram dengan akun Sipinrang\n";
+			$respons .= "/disconnect username_password - Memutuskan akun Telegram dengan akun Sipinrang\n";
 
 			$opt = [
 				"parse_mode" => "HTML",
@@ -78,12 +79,36 @@ class Telebot extends Controller
 					];
 					$res = $this->account->login($data);
 					if ($res) {
-						$resp = $this->user->addChatID($auth[0], $ctx->chatId);
-						if ($resp) {
-							$respons = "Akun Telegram berhasil dihubungkan dengan akun STIS.";
-						} else {
-							$respons = "Gagal menghubungkan akun Telegram dengan akun STIS.";
-						}
+						$respons = $this->user->addChatID($auth[0], $ctx->chatId);
+					} else {
+						$respons = "Username atau password yang dimasukkan salah.";
+					}
+				}
+			}
+
+			$opt = [
+				"parse_mode" => "HTML",
+				"reply_to_message_id" => $ctx->messageId
+			];
+			$ctx->replyWithText($respons, $opt);
+		});
+
+		$this->bot->command("disconnect", function ($ctx) {
+			$cmd = explode(" ", $ctx->text);
+			if (count($cmd) < 2) {
+				$respons = "Perintah tidak valid. Gunakan perintah /disconnect disertai username_password";
+			} else {
+				$auth = explode("_", $cmd[1], 2);
+				if (count($auth) < 2) {
+					$respons = "Perintah tidak valid. Gunakan perintah /disconnect disertai username_password";
+				} else {
+					$data = [
+						"username" => $auth[0],
+						"password" => $auth[1]
+					];
+					$res = $this->account->login($data);
+					if ($res) {
+						$respons = $this->user->removeChatID($auth[0]);
 					} else {
 						$respons = "Username atau password yang dimasukkan salah.";
 					}
@@ -102,7 +127,7 @@ class Telebot extends Controller
 
 	public function setWebhook()
 	{
-		$url = "https://43f0-223-255-230-20.ngrok-free.app";
+		$url = "";
 		$res = $this->bot->setWebhook($url);
 		echo $res;
 	}
