@@ -58,6 +58,9 @@ h1.sidebar-brand {
 .sidebar-list li.active {
   background-color: rgba(42, 74, 155, 0.4);
 }
+.sidebar-list li:hover {
+  background-color: rgba(42, 74, 155, 0.4);
+}
 
 main {
   position: absolute;
