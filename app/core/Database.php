@@ -27,11 +27,13 @@ class Database
 		}
 	}
 
-	public function query($qry) {
+	public function query($qry)
+	{
 		$this->stmt = $this->conn->prepare($qry);
 	}
 
-	public function bind($param, $value, $type=null) {
+	public function bind($param, $value, $type = null)
+	{
 		if (is_null($type)) {
 			switch (true) {
 				case is_int($value):
@@ -51,11 +53,13 @@ class Database
 		$this->stmt->bindValue($param, $value, $type);
 	}
 
-	public function execute() {
+	public function execute()
+	{
 		$this->stmt->execute();
 	}
 
-	public function resultSet() {
+	public function resultSet()
+	{
 		$this->execute();
 		return $this->stmt->fetchAll(PDO::FETCH_ASSOC);
 	}
@@ -69,10 +73,5 @@ class Database
 	public function rowCount()
 	{
 		return $this->stmt->rowCount();
-	}
-
-	public function quote($string)
-	{
-		return $this->conn->quote($string);
 	}
 }
