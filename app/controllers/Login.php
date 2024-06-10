@@ -24,7 +24,7 @@ class Login extends Controller
 
 		$this->partial('Account/Header', $data);
 		$this->view('login');
-		$this->partial('Account/Footer', $data);
+		$this->partial('Account/Footer');
 	}
 
 	public function do()
