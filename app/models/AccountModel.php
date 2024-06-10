@@ -33,10 +33,14 @@ class AccountModel
 	public function register($data)
 	{
 		$username = $data['username'];
+		if (strpos($username, ' ') !== false) {
+			return "Username tidak boleh mengandung spasi!";
+		}
+
 		$email = $data['email'];
 		$unit = $data['unit'];
-		$password = $this->db->quote($data['password']);
-		$repassword = $this->db->quote($data['repassword']);
+		$password = $data['password'];
+		$repassword = $data['repassword'];
 		$level = $data['level'];
 
 		// Cek apakah username sudah ada
@@ -48,10 +52,28 @@ class AccountModel
 			return "Username sudah terdaftar pada sistem!";
 		}
 
+		// Cek apakah unit sudah ada
+		$this->db->query('SELECT unit FROM ' . $this->table . ' WHERE unit = :unit');
+		$this->db->bind(':unit', $unit);
+		$this->db->single();
+
+		if ($this->db->rowCount() > 0) {
+			return "Unit sudah terdaftar pada sistem!";
+		}
+
 		// Cek apakah email berdomain STIS
 		$domain = explode('@', $email)[1];
 		if ($domain != 'stis.ac.id') {
 			return "Email harus berdomain STIS!";
+		}
+
+		// Cek apakah email sudah ada
+		$this->db->query('SELECT email FROM ' . $this->table . ' WHERE email = :email');
+		$this->db->bind(':email', $email);
+		$this->db->single();
+
+		if ($this->db->rowCount() > 0) {
+			return "Email sudah terdaftar pada sistem!";
 		}
 
 		// Cek apakah password dan repassword sama
