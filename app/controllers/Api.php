@@ -5,6 +5,8 @@ class Api extends Controller
 	private $username;
 	private $unit;
 	private $level;
+	private $chatID;
+	private $bot;
 
 	public function __construct()
 	{
@@ -12,9 +14,11 @@ class Api extends Controller
 			$this->redirect('login');
 		}
 
+		$this->bot = $this->model('TelebotModel');
 		$this->username = $_SESSION['user'];
 		$this->unit = $this->model('UserModel')->getUnitByUsername($this->username);
 		$this->level = $this->model('UserModel')->getLevelByUsername($this->username);
+		$this->chatID = $this->model('UserModel')->getChatIdByUsername($this->username);
 
 		$this->data = [
 			'css' => ['Dashboard/Style.css', 'Dashboard/Peminjaman.css'],
@@ -30,10 +34,10 @@ class Api extends Controller
 		$this->redirect('user');
 	}
 
-	public function search_all_peminjaman()
+	public function search_semua_peminjaman()
 	{
 		if (!isset($_POST['search']) || !isset($_POST['limit'])) {
-			$this->redirect('user/all-peminjaman');
+			$this->redirect('user/semua-peminjaman');
 		}
 
 		$search = $_POST['search'];
@@ -56,13 +60,13 @@ class Api extends Controller
 
 		$this->data['list-sesi'] = $this->model('SesiModel')->getAll();
 
-		$this->helper('Dashboard/allPeminjaman', $this->data);
+		$this->helper('Dashboard/semuaPeminjaman', $this->data);
 	}
 
-	public function search_my_peminjaman()
+	public function search_riwayat_peminjaman()
 	{
 		if (!isset($_POST['search']) || !isset($_POST['limit'])) {
-			$this->redirect('user/my-peminjaman');
+			$this->redirect('user/riwayat-peminjaman');
 		}
 
 		$search = $_POST['search'];
@@ -85,7 +89,7 @@ class Api extends Controller
 
 		$this->data['list-sesi'] = $this->model('SesiModel')->getAll();
 
-		$this->helper('Dashboard/myPeminjaman', $this->data);
+		$this->helper('Dashboard/riwayatPeminjaman', $this->data);
 	}
 
 	public function search_user()
@@ -126,12 +130,30 @@ class Api extends Controller
 	}
 
 	// Update Status Peminjaman
-	public function update_status_peminjaman($id, $status)
+	public function update_status_peminjaman($idpinjam, $status)
 	{
 		if ($this->level != 1) {
 			$this->redirect('forbidden');
 		}
 
-		$this->model('PeminjamanModel')->updateStatusPeminjaman($id, $status);
+		$res = $this->model('PeminjamanModel')->updateStatusPeminjaman($idpinjam, $status);
+
+		$listStatus = [
+			1 => "Dalam Proses Persetujuan BAU",
+			2 => "Disetujui",
+			3 => "Ditolak"
+		];
+		if ($res > 0) {
+			if ($this->chatID != null) {
+				$detail = $this->model('PeminjamanModel')->getPeminjamanByIdPinjam($idpinjam);
+				if ($detail['unit'] == $this->unit) {
+					$this->bot->send("sendMessage", [
+						"parse_mode" => "Markdown",
+						"chat_id" => $this->chatID,
+						"text" => "Peminjaman dengan ID *$idpinjam* telah diperbarui menjadi *" . $listStatus[$status] . "* dengan detail berikut.\nKegiatan: *$detail[kegiatan]*\nTanggal: *$detail[diperlukan_tanggal]*\nSesi: *$detail[sesi]*\nRuang: *$detail[ruang]*"
+					]);
+				}
+			}
+		}
 	}
 }

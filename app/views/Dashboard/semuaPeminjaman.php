@@ -27,7 +27,7 @@ $numEnd = $numStart + count($data['peminjaman']) - 1;
 
 <main class="mx-4">
 	<h3 class="mb-4">Semua Peminjaman</h3>
-	<?php Flasher::flash("all-peminjaman") ?>
+	<?php Flasher::flash("semua-peminjaman") ?>
 
 	<div class="wrapper bg-light p-4 my-4">
 		<div class="d-flex gap-2 justify-content-between align-items-center py-2" id="top-table">
@@ -115,21 +115,21 @@ $numEnd = $numStart + count($data['peminjaman']) - 1;
 						<!-- Paginate Button Start -->
 						<ul class="d-flex flex-wrap row-gap-5 list-style-none" id="paginate">
 							<?php if ($data['totalHalaman'] != 5 && $data['currPage'] > 3) : ?>
-								<li><a class="p-2 text-decoration-none bg-gray" href="user/all-peminjaman/1">&lt;&lt;</a></li>
-								<li><a class="p-2 text-decoration-none bg-gray" href="user/all-peminjaman/<?= $data['currPage'] - 1 ?>">&lt;</a></li>
+								<li><a class="p-2 text-decoration-none bg-gray" href="user/semua-peminjaman/1">&lt;&lt;</a></li>
+								<li><a class="p-2 text-decoration-none bg-gray" href="user/semua-peminjaman/<?= $data['currPage'] - 1 ?>">&lt;</a></li>
 							<?php endif; ?>
 
 							<?php if ($data['totalHalaman'] > 1) : ?>
 								<?php for ($i = $startPage; $i <= $endPage; $i++) : ?>
 									<li>
-										<a class="p-2 text-decoration-none <?= $data['currPage'] == $i ? 'curr-page' : 'bg-gray'; ?>" href="user/all-peminjaman/<?= $i ?>"><?= $i ?></a>
+										<a class="p-2 text-decoration-none <?= $data['currPage'] == $i ? 'curr-page' : 'bg-gray'; ?>" href="user/semua-peminjaman/<?= $i ?>"><?= $i ?></a>
 									</li>
 								<?php endfor; ?>
 							<?php endif; ?>
 
 							<?php if ($data['totalHalaman'] != 5 && $data['currPage'] < $data['totalHalaman'] - 2) : ?>
-								<li><a class="p-2 text-decoration-none bg-gray" href="user/all-peminjaman/<?= $data['currPage'] + 1; ?>">&gt;</a></li>
-								<li><a class="p-2 text-decoration-none bg-gray" href="user/all-peminjaman/<?= $data['totalHalaman'] ?>">&gt;&gt;</a></li>
+								<li><a class="p-2 text-decoration-none bg-gray" href="user/semua-peminjaman/<?= $data['currPage'] + 1; ?>">&gt;</a></li>
+								<li><a class="p-2 text-decoration-none bg-gray" href="user/semua-peminjaman/<?= $data['totalHalaman'] ?>">&gt;&gt;</a></li>
 							<?php endif; ?>
 						</ul>
 						<!-- Paginate Button End -->

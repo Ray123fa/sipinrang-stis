@@ -30,6 +30,7 @@ $numEnd = $numStart + count($data['peminjaman']) - 1;
 			<thead>
 				<tr>
 					<th>Nama Kegiatan</th>
+					<th>Pengaju</th>
 					<th>Dibuat</th>
 					<th>Diperlukan</th>
 					<th>Ruang</th>
@@ -41,15 +42,16 @@ $numEnd = $numStart + count($data['peminjaman']) - 1;
 			<tbody>
 				<?php if ($data['totalRows'] == 0) : ?>
 					<tr>
-						<td colspan="8" class="text-center">Data tidak ditemukan</td>
+						<td colspan="9" class="text-center">Data tidak ditemukan</td>
 					</tr>
 				<?php endif; ?>
 				<?php foreach ($data['peminjaman'] as $peminjaman) : ?>
 					<tr>
 						<td><?= $peminjaman['kegiatan'] ?></td>
-						<td><?= $peminjaman['dibuat_tanggal'] ?></td>
-						<td><?= $peminjaman['diperlukan_tanggal'] ?></td>
-						<td><?= $peminjaman['ruang'] ?></td>
+						<td class="text-center"><?= $peminjaman['unit'] ?></td>
+						<td class="text-center"><?= $peminjaman['dibuat_tanggal'] ?></td>
+						<td class="text-center"><?= $peminjaman['diperlukan_tanggal'] ?></td>
+						<td class="text-center"><?= $peminjaman['ruang'] ?></td>
 						<td class="text-center">
 							<?= $data['list-sesi'][(string) $peminjaman['sesi'] - 1]['namaSesi'] ?>
 						</td>
@@ -65,11 +67,13 @@ $numEnd = $numStart + count($data['peminjaman']) - 1;
 								<i class="fas fa-eye"></i>
 							</a>
 						</td>
-						<td class="text-center">
-							<a class="text-decoration-none text-danger px-1 cursor-pointer" onclick="deletePeminjaman('<?= $peminjaman['id_pinjam'] ?>')">
-								<i class="fas fa-trash"></i>
-							</a>
-						</td>
+						<?php if ($data['level'] == 1) : ?>
+							<td class="text-center">
+								<a class="text-decoration-none text-danger px-1 cursor-pointer" onclick="deletePeminjaman('<?= $peminjaman['id_pinjam'] ?>')">
+									<i class="fas fa-trash"></i>
+								</a>
+							</td>
+						<?php endif; ?>
 					</tr>
 				<?php endforeach; ?>
 			</tbody>
@@ -85,21 +89,21 @@ $numEnd = $numStart + count($data['peminjaman']) - 1;
 			<!-- Paginate Button Start -->
 			<ul class="d-flex flex-wrap row-gap-5 list-style-none" id="paginate">
 				<?php if ($data['totalHalaman'] != 5 && $data['currPage'] > 3) : ?>
-					<li><a class="p-2 text-decoration-none bg-gray" href="user/my-peminjaman/1">&lt;&lt;</a></li>
-					<li><a class="p-2 text-decoration-none bg-gray" href="user/my-peminjaman/<?= $data['currPage'] - 1 ?>">&lt;</a></li>
+					<li><a class="p-2 text-decoration-none bg-gray" href="user/semua-peminjaman/1">&lt;&lt;</a></li>
+					<li><a class="p-2 text-decoration-none bg-gray" href="user/semua-peminjaman/<?= $data['currPage'] - 1 ?>">&lt;</a></li>
 				<?php endif; ?>
 
 				<?php if ($data['totalHalaman'] > 1) : ?>
 					<?php for ($i = $startPage; $i <= $endPage; $i++) : ?>
 						<li>
-							<a class="p-2 text-decoration-none <?= $data['currPage'] == $i ? 'curr-page' : 'bg-gray'; ?>" href="user/my-peminjaman/<?= $i ?>"><?= $i ?></a>
+							<a class="p-2 text-decoration-none <?= $data['currPage'] == $i ? 'curr-page' : 'bg-gray'; ?>" href="user/semua-peminjaman/<?= $i ?>"><?= $i ?></a>
 						</li>
 					<?php endfor; ?>
 				<?php endif; ?>
 
 				<?php if ($data['totalHalaman'] != 5 && $data['currPage'] < $data['totalHalaman'] - 2) : ?>
-					<li><a class="p-2 text-decoration-none bg-gray" href="user/my-peminjaman/<?= $data['currPage'] + 1; ?>">&gt;</a></li>
-					<li><a class="p-2 text-decoration-none bg-gray" href="user/my-peminjaman/<?= $data['totalHalaman'] ?>">&gt;&gt;</a></li>
+					<li><a class="p-2 text-decoration-none bg-gray" href="user/semua-peminjaman/<?= $data['currPage'] + 1; ?>">&gt;</a></li>
+					<li><a class="p-2 text-decoration-none bg-gray" href="user/semua-peminjaman/<?= $data['totalHalaman'] ?>">&gt;&gt;</a></li>
 				<?php endif; ?>
 			</ul>
 			<!-- Paginate Button End -->

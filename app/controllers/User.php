@@ -6,11 +6,12 @@ class User extends Controller
 	private $username;
 	private $unit;
 	private $level;
+	private $chatID;
 
 	public function __construct()
 	{
 		// Session Timeout
-		$inactive = 7200;
+		$inactive = 60 * 60 * 12;
 		if (isset($_SESSION['timeout'])) {
 			$session_life = time() - $_SESSION['timeout'];
 			if ($session_life > $inactive) {
@@ -42,6 +43,7 @@ class User extends Controller
 		$this->username = $_SESSION['user'];
 		$this->unit = $this->model('UserModel')->getUnitByUsername($this->username);
 		$this->level = $this->model('UserModel')->getLevelByUsername($this->username);
+		$this->chatID = "-4284568287";
 
 		$this->data = [
 			'css' => ['Dashboard/Style.css', 'flasher.css'],
@@ -73,7 +75,7 @@ class User extends Controller
 	// Profil
 	public function profile()
 	{
-		if ($this->level == 3) {
+		if ($this->level == 4) {
 			$this->redirect('forbidden');
 		}
 
@@ -130,7 +132,7 @@ class User extends Controller
 	}
 
 	// Semua Peminjaman
-	public function all_peminjaman($page = 1)
+	public function semua_peminjaman($page = 1)
 	{
 		if (isset($_SESSION['search_my'])) {
 			unset($_SESSION['search_my']);
@@ -138,7 +140,7 @@ class User extends Controller
 
 		$this->data['title'] = 'Semua Peminjaman';
 		$this->data['css'][2] = 'Dashboard/Table.css';
-		$this->data['js'][1] = 'Dashboard/allPeminjaman.js';
+		$this->data['js'][1] = 'Dashboard/semuaPeminjaman.js';
 
 		// Pagination
 		$start = 0;
@@ -170,9 +172,9 @@ class User extends Controller
 		$this->data['totalHalaman'] = $totalHalaman;
 
 		if ($page < 1) {
-			$this->redirect('user/all-peminjaman/1');
+			$this->redirect('user/semua-peminjaman/1');
 		} else if ($page > $totalHalaman && $totalHalaman != 0) {
-			$this->redirect('user/all-peminjaman/' . $totalHalaman);
+			$this->redirect('user/semua-peminjaman/' . $totalHalaman);
 		}
 
 		if ($page > 1) {
@@ -196,19 +198,19 @@ class User extends Controller
 		$this->data['list-sesi'] = $this->model('SesiModel')->getAll();
 
 		if (isset($_POST['limit']) && isset($_POST['status'])) {
-			$this->helper('Dashboard/allPeminjaman', $this->data);
+			$this->helper('Dashboard/semuaPeminjaman', $this->data);
 		} else {
 			$this->partial('Dashboard/Header', $this->data);
 			$this->partial('Dashboard/Sidebar', $this->data);
-			$this->view('Dashboard/allPeminjaman', $this->data);
+			$this->view('Dashboard/semuaPeminjaman', $this->data);
 			$this->partial('Dashboard/Footer', $this->data);
 		}
 	}
 
 	// Peminjaman Saya
-	public function my_peminjaman($page = 1)
+	public function riwayat_peminjaman($page = 1)
 	{
-		if ($this->level == 3) {
+		if ($this->level == 4) {
 			$this->redirect('forbidden');
 		}
 
@@ -216,9 +218,9 @@ class User extends Controller
 			unset($_SESSION['search_all']);
 		}
 
-		$this->data['title'] = 'Peminjaman Saya';
+		$this->data['title'] = 'Riwayat Peminjaman';
 		$this->data['css'][2] = 'Dashboard/Table.css';
-		$this->data['js'][1] = 'Dashboard/myPeminjaman.js';
+		$this->data['js'][1] = 'Dashboard/riwayatPeminjaman.js';
 
 		$start = 0;
 		$limit = 7;
@@ -246,9 +248,9 @@ class User extends Controller
 		$this->data['totalHalaman'] = $totalHalaman;
 
 		if ($page < 1) {
-			$this->redirect('user/my-peminjaman/1');
+			$this->redirect('user/riwayat-peminjaman/1');
 		} else if ($page > $totalHalaman && $totalHalaman != 0) {
-			$this->redirect('user/my-peminjaman/' . $totalHalaman);
+			$this->redirect('user/riwayat-peminjaman/' . $totalHalaman);
 		}
 
 		if ($page > 1) {
@@ -272,11 +274,11 @@ class User extends Controller
 		$this->data['list-sesi'] = $this->model('SesiModel')->getAll();
 
 		if (isset($_POST['limit'])) {
-			$this->helper('Dashboard/myPeminjaman', $this->data);
+			$this->helper('Dashboard/riwayatPeminjaman', $this->data);
 		} else {
 			$this->partial('Dashboard/Header', $this->data);
 			$this->partial('Dashboard/Sidebar', $this->data);
-			$this->view('Dashboard/myPeminjaman', $this->data);
+			$this->view('Dashboard/riwayatPeminjaman', $this->data);
 			$this->partial('Dashboard/Footer', $this->data);
 		}
 	}
@@ -285,6 +287,11 @@ class User extends Controller
 	{
 		if ($idpinjam == null) {
 			$this->redirect('notfound');
+		} else {
+			$check = $this->model('PeminjamanModel')->getPeminjamanByIdPinjam($idpinjam);
+			if ($check == null) {
+				$this->redirect('notfound');
+			}
 		}
 
 		if (isset($_SESSION['search_all'])) {
@@ -314,7 +321,7 @@ class User extends Controller
 	// Create Peminjaman
 	public function tambah_peminjaman()
 	{
-		if ($this->level == 3) {
+		if ($this->level == 4) {
 			$this->redirect('forbidden');
 		}
 
@@ -348,7 +355,7 @@ class User extends Controller
 		if ($res[0] === 1) {
 			$resp = $this->bot->send("sendMessage", [
 				"parse_mode" => "Markdown",
-				"chat_id" => "-4221466827",
+				"chat_id" => $this->chatID,
 				"text" => "Peminjaman baru telah ditambahkan oleh $this->unit dengan detail berikut.\nID Pinjam: *$res[1]*.\nKegiatan: *$_POST[kegiatan]*\nTanggal: *$_POST[diperlukan_tanggal]*\nSesi: *$_POST[sesi]*\nRuang: *$_POST[ruang]*."
 			]);
 
@@ -380,7 +387,7 @@ class User extends Controller
 		if ($res === 1) {
 			$resp = $this->bot->send("sendMessage", [
 				"parse_mode" => "Markdown",
-				"chat_id" => "-4221466827",
+				"chat_id" => $this->chatID,
 				"text" => "Peminjaman dengan ID *$idpinjam* telah diperbarui oleh $this->unit dengan detail berikut.\nKegiatan: *$_POST[kegiatan]*\nTanggal: *$_POST[diperlukan_tanggal]*\nSesi: *$_POST[sesi]*\nRuang: *$_POST[ruang]*."
 			]);
 
@@ -409,27 +416,27 @@ class User extends Controller
 		if ($res === 1) {
 			$resp = $this->bot->send("sendMessage", [
 				"parse_mode" => "Markdown",
-				"chat_id" => "-4221466827",
+				"chat_id" => $this->chatID,
 				"text" => "Peminjaman dengan detail berikut telah dihapus oleh $this->unit.\nID Pinjam: *$idpinjam*.\nKegiatan: *$detail[kegiatan]*\nTanggal: *$detail[diperlukan_tanggal]*\nSesi: *$detail[sesi]*\nRuang: *$detail[ruang]*"
 			]);
 
 			if ($resp->ok) {
-				Flasher::setFlash('Peminjaman berhasil dihapus!', 'success', 'all-peminjaman');
-				$this->redirect('user/all-peminjaman');
+				Flasher::setFlash('Peminjaman berhasil dihapus!', 'success', 'semua-peminjaman');
+				$this->redirect('user/semua-peminjaman');
 			} else {
-				Flasher::setFlash('Peminjaman berhasil dihapus, tetapi notifikasi gagal dikirim!', 'warning', 'all-peminjaman');
-				$this->redirect('user/all-peminjaman');
+				Flasher::setFlash('Peminjaman berhasil dihapus, tetapi notifikasi gagal dikirim!', 'warning', 'semua-peminjaman');
+				$this->redirect('user/semua-peminjaman');
 			}
 		} else {
-			Flasher::setFlash($res, 'warning', 'all-peminjaman');
-			$this->redirect('user/all-peminjaman');
+			Flasher::setFlash($res, 'warning', 'semua-peminjaman');
+			$this->redirect('user/semua-peminjaman');
 		}
 	}
 
 	// Daftar Pengguna
 	public function daftar_pengguna($page = 1)
 	{
-		if ($this->level != 1) {
+		if ($this->level > 2) {
 			$this->redirect('forbidden');
 		}
 

@@ -10,10 +10,10 @@ function sendLimitStatus() {
     if (xhr.readyState == 4 && xhr.status == 200) {
       const result = document.getElementById("result");
       result.innerHTML = xhr.responseText;
-      window.history.pushState({}, null, `user/my-peminjaman/1`);
+      window.history.pushState({}, null, `user/semua-peminjaman/1`);
     }
   };
-  xhr.open("POST", `user/my-peminjaman`, true);
+  xhr.open("POST", `user/semua-peminjaman`, true);
   xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
   xhr.send(`limit=${entries.value}&status=${filterStatus.value}`);
 }
@@ -45,7 +45,7 @@ search.addEventListener("keyup", () => {
     if (xhr.readyState == 4 && xhr.status == 200) {
       const result = document.getElementById("result");
       result.innerHTML = xhr.responseText;
-      window.history.pushState({}, null, `user/my-peminjaman/1`);
+      window.history.pushState({}, null, `user/semua-peminjaman/1`);
     }
   };
 
@@ -54,7 +54,7 @@ search.addEventListener("keyup", () => {
   data.append("status", filterStatus.value);
   data.append("search", search.value);
 
-  xhr.open("POST", `api/search-my-peminjaman`, true);
+  xhr.open("POST", `api/search-semua-peminjaman`, true);
   xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
   xhr.send(data);
 });
