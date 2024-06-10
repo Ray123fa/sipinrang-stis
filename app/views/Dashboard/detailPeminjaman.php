@@ -65,7 +65,7 @@
 								<?php foreach ($data['list-status'] as $status) : ?>
 									<option value="<?= $status['kode'] ?>" <?= ($kode_status == $status['kode']) ? 'selected' : '' ?>><?= $status['status'] ?></option>
 								<?php endforeach ?>
-							<?php elseif ($data['level'] == 2) : ?>
+							<?php elseif ($data['level'] > 1) : ?>
 								<option value="<?= $kode_status ?>" selected>
 									<?= $data['list-status'][$kode_status - 1]['status']; ?>
 								</option>
