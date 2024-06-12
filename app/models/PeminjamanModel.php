@@ -188,6 +188,15 @@ class PeminjamanModel
 		return $row;
 	}
 
+	public function getUnitByIdPinjam($id_pinjam)
+	{
+		$this->db->query('SELECT unit FROM ' . $this->table . ' WHERE id_pinjam = :id_pinjam');
+		$this->db->bind(':id_pinjam', $id_pinjam);
+		$row = $this->db->single();
+
+		return $row['unit'];
+	}
+
 	// Tambah Peminjaman
 	public function tambahPeminjaman($data, $unit)
 	{
