@@ -19,6 +19,12 @@
 			</li>
 		<?php endif; ?>
 		<?php if ($data['level'] < 3) : ?>
+			<li class="d-flex align-items-center p-5px border-radius-1 mb-2 <?= ($data['title'] == 'Tambah Pengguna') ? 'active' : ''; ?>">
+				<a href="user/tambah-pengguna">
+					<i class="fas fa-plus mr-2"></i>
+					<a href="user/tambah-pengguna" class="w-full">Tambah Pengguna</a>
+				</a>
+			</li>
 			<li class="d-flex align-items-center p-5px border-radius-1 mb-2 <?= ($data['title'] == 'Daftar Pengguna') ? 'active' : ''; ?>">
 				<a href="user/daftar-pengguna">
 					<i class="fas fa-list mr-2"></i>
