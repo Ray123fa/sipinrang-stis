@@ -5,7 +5,6 @@ class Api extends Controller
 	private $username;
 	private $unit;
 	private $level;
-	private $chatID;
 	private $bot;
 
 	public function __construct()
@@ -14,11 +13,10 @@ class Api extends Controller
 			$this->redirect('login');
 		}
 
-		$this->bot = $this->model('TelebotModel');
+		$this->bot = $this->model('WhatsappModel');
 		$this->username = $_SESSION['user'];
 		$this->unit = $this->model('UserModel')->getUnitByUsername($this->username);
 		$this->level = $this->model('UserModel')->getLevelByUsername($this->username);
-		$this->chatID = $this->model('UserModel')->getChatIdByUsername($this->username);
 
 		$this->data = [
 			'css' => ['Dashboard/Style.css', 'Dashboard/Peminjaman.css'],
@@ -144,16 +142,14 @@ class Api extends Controller
 			3 => "Ditolak"
 		];
 		if ($res > 0) {
-			if ($this->chatID != null) {
-				$detail = $this->model('PeminjamanModel')->getPeminjamanByIdPinjam($idpinjam);
-				if ($detail['unit'] == $this->unit) {
-					$this->bot->send("sendMessage", [
-						"parse_mode" => "Markdown",
-						"chat_id" => $this->chatID,
-						"text" => "Peminjaman dengan ID *$idpinjam* telah diperbarui menjadi *" . $listStatus[$status] . "* dengan detail berikut.\nKegiatan: *$detail[kegiatan]*\nTanggal: *$detail[diperlukan_tanggal]*\nSesi: *$detail[sesi]*\nRuang: *$detail[ruang]*"
-					]);
-				}
-			}
+			$detail = $this->model('PeminjamanModel')->getPeminjamanByIdPinjam($idpinjam);
+			$noWA = $this->model('UserModel')->getWAByUnit($detail['unit']);
+
+			$msg = "Peminjaman dengan ID *$idpinjam* telah diperbarui menjadi *" . $listStatus[$status] . "* dengan detail berikut.\nKegiatan: *$detail[kegiatan]*\nTanggal: *$detail[diperlukan_tanggal]*\nSesi: *$detail[sesi]*\nRuang: *$detail[ruang]*";
+			$reply = [
+				"message" => $msg
+			];
+			$this->bot->sendFonnte($noWA, $reply);
 		}
 	}
 }
