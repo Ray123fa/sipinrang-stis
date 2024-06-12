@@ -1,3 +1,9 @@
+<?php
+if ($data['no_wa'] == null) {
+	Flasher::setFlash("Mohon lengkapi/perbarui profil Anda terlebih dahulu", "warning", "profile");
+}
+?>
+
 <main>
 	<h2>Profil Anda</h2>
 
@@ -15,8 +21,10 @@
 					<img class="rounded-circle" src="<?php
 																						if ($data['profile_img_path'] == null) {
 																							echo 'img/profile.png';
-																						} else {
+																						} else if (file_exists($data['profile_img_path'])) {
 																							echo $data['profile_img_path'];
+																						} else {
+																							echo 'img/profile.png';
 																						}
 																						?>" alt="Foto Profil" width="70" height="70" id="profile_img_preview">
 					<span style="margin-left: -10px"><i class="bg-gray fas fa-camera p-1 rounded-circle" style="color: var(--primary-2); width:1rem; height:1rem;"></i></span>
@@ -32,10 +40,11 @@
 					</td>
 				</tr>
 				<tr>
-					<td><label for="email">Email</label></td>
+					<td><label for="no_wa">No. WhatsApp</label></td>
 					<td>
-						<label class="mb-1" for="email">Email</label>
-						<input autocomplete="off" class="form-input" type="email" name="email" id="email" value="<?= $data['email'] ?>" maxlength="50" required>
+						<label class="mb-1" for="no_wa">No. WhatsApp</label>
+						<input autocomplete="off" class="form-input" type="tel" placeholder="+6281234567890" pattern="^\+62[0-9]{9,13}$" name="no_wa" id="no_wa" value="<?= $data['no_wa'] ?>" required>
+						<small>Format: +62 diikuti oleh 9-13 digit angka</small>
 					</td>
 				</tr>
 				<tr>

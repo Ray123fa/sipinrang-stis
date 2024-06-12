@@ -49,10 +49,9 @@ $numEnd = $numStart + count($data['users']) - 1;
 						<thead>
 							<tr>
 								<th>Username</th>
-								<th>Email</th>
 								<th>Unit</th>
+								<th>No. WhatsApp</th>
 								<th>Level</th>
-								<th>Chat ID</th>
 								<th>Aksi</th>
 							</tr>
 						</thead>
@@ -65,18 +64,17 @@ $numEnd = $numStart + count($data['users']) - 1;
 							<?php foreach ($data['users'] as $user) : ?>
 								<tr>
 									<td><?= $user['username'] ?></td>
-									<td class="text-center"><?= $user['email'] ?></td>
 									<td class="text-center"><?= $user['unit'] ?></td>
+									<td class="text-center"><?= ($user['no_wa'] == '') ? '-' : $user['no_wa'] ?></td>
 									<td class="text-center">
-										<select class="p-2 border-radius-1" name="level" id="level" <?= ($user['level'] < 2) ? 'disabled' : '' ?>>
+										<select class="p-2 border-radius-1" name="level" <?= ($user['level'] < 2) ? 'disabled' : '' ?> onchange="confirm('tes')">
 											<option value="1" <?= ($user['level'] == 1) ? 'selected' : (($data['level'] == 1) ? '' : 'disabled'); ?>>Superadmin</option>
 											<option value="2" <?= ($user['level'] == 2) ? 'selected' : '' ?>>Admin</option>
 											<option value="3" <?= ($user['level'] == 3) ? 'selected' : '' ?>>User</option>
 										</select>
 									</td>
-									<td class="text-center"><?= ($user['chat_id'] == '') ? '-' : $user['chat_id'] ?></td>
 									<td class="text-center">
-										<a class="text-decoration-none text-danger px-1 cursor-pointer" href="user/daftar-pengguna/#">
+										<a class="text-decoration-none text-danger px-1 <?= ($user['level'] < 3) ? 'cursor-not-allowed' : 'cursor-pointer' ?>" href="<?= ($user['level'] < 3) ? 'user/daftar-pengguna/#' : 'user/delete-pengguna/' . $user['id'] ?>">
 											<i class="fas fa-trash"></i>
 										</a>
 									</td>
