@@ -6,7 +6,7 @@ class User extends Controller
 	private $username;
 	private $unit;
 	private $level;
-	private $chatID;
+	private $noWA;
 
 	public function __construct()
 	{
@@ -16,7 +16,7 @@ class User extends Controller
 			$session_life = time() - $_SESSION['timeout'];
 			if ($session_life > $inactive) {
 				session_unset();
-				session_destroy();
+				Flasher::setFlash('Sesi telah berakhir, silakan login kembali!', 'danger');
 				$this->redirect('login');
 			}
 		}
@@ -25,8 +25,8 @@ class User extends Controller
 		// Check remember me
 		if (isset($_COOKIE['remember_me']) && !isset($_SESSION['user'])) {
 			$cookie = $_COOKIE['remember_me'];
-			$cookie = json_decode(CookieHandler::decrypt($cookie, 'REMEMBER_ME'), true);
-			$_SESSION['user'] = $cookie['username'];
+			$cookie = CookieHandler::decrypt($cookie, 'REMEMBER_ME');
+			$_SESSION['user'] = $cookie;
 		}
 
 		// Check if user is logged in
@@ -39,11 +39,11 @@ class User extends Controller
 			}
 		}
 
-		$this->bot = $this->model('TelebotModel');
+		$this->bot = $this->model('WhatsappModel');
 		$this->username = $_SESSION['user'];
 		$this->unit = $this->model('UserModel')->getUnitByUsername($this->username);
 		$this->level = $this->model('UserModel')->getLevelByUsername($this->username);
-		$this->chatID = "-4284568287";
+		$this->noWA = $this->model('UserModel')->getWAByUnit($this->unit);
 
 		$this->data = [
 			'css' => ['Dashboard/Style.css', 'flasher.css'],
@@ -353,13 +353,14 @@ class User extends Controller
 
 		$res = $this->model('PeminjamanModel')->tambahPeminjaman($_POST, $this->unit);
 		if ($res[0] === 1) {
-			$resp = $this->bot->send("sendMessage", [
-				"parse_mode" => "Markdown",
-				"chat_id" => $this->chatID,
-				"text" => "Peminjaman baru telah ditambahkan oleh $this->unit dengan detail berikut.\nID Pinjam: *$res[1]*.\nKegiatan: *$_POST[kegiatan]*\nTanggal: *$_POST[diperlukan_tanggal]*\nSesi: *$_POST[sesi]*\nRuang: *$_POST[ruang]*."
-			]);
+			$msg = "Anda telah berhasil menambahkan peminjaman dengan detail berikut.\nID Pinjam: *$res[1]*.\nKegiatan: *$_POST[kegiatan]*\nTanggal: *$_POST[diperlukan_tanggal]*\nSesi: *$_POST[sesi]*\nRuang: *$_POST[ruang]*.";
+			$reply = [
+				"message" => $msg
+			];
+			$resp = $this->bot->sendFonnte($this->noWA, $reply);
+			$resp = json_decode($resp, true);
 
-			if ($resp->ok) {
+			if ($resp['status']) {
 				Flasher::setFlash('Peminjaman berhasil ditambahkan!', 'success', 'tambah-peminjaman');
 				$this->redirect('user/tambah-peminjaman');
 			} else {
@@ -385,18 +386,31 @@ class User extends Controller
 
 		$res = $this->model('PeminjamanModel')->editPeminjaman($_POST, $idpinjam, $this->level);
 		if ($res === 1) {
-			$resp = $this->bot->send("sendMessage", [
-				"parse_mode" => "Markdown",
-				"chat_id" => $this->chatID,
-				"text" => "Peminjaman dengan ID *$idpinjam* telah diperbarui oleh $this->unit dengan detail berikut.\nKegiatan: *$_POST[kegiatan]*\nTanggal: *$_POST[diperlukan_tanggal]*\nSesi: *$_POST[sesi]*\nRuang: *$_POST[ruang]*."
-			]);
+			$this->noWA = $this->model('UserModel')->getWAByUnit($this->model('PeminjamanModel')->getUnitByIdPinjam($idpinjam));
+			$listStatus = [
+				1 => "Proses Persetujuan BAU",
+				2 => "Disetujui",
+				3 => "Ditolak"
+			];
 
-			if ($resp->ok) {
-				Flasher::setFlash('Peminjaman berhasil diperbarui!', 'success', 'detail-peminjaman');
-				$this->redirect('user/detail-peminjaman/' . $idpinjam);
+			$keterangan = ($_POST['keterangan'] == '') ? '-' : $_POST['keterangan'];
+			if ($this->unit != $this->model('PeminjamanModel')->getUnitByIdPinjam($idpinjam)) {
+				$msg = "Peminjaman dengan ID *$idpinjam* telah diperbarui oleh $this->unit dengan detail berikut.\nKegiatan: *$_POST[kegiatan]*\nTanggal: *$_POST[diperlukan_tanggal]*\nSesi: *$_POST[sesi]*\nRuang: *$_POST[ruang]*\nStatus: *" . $listStatus[$_POST['status']] . "*\nKeterangan: *$keterangan*";
 			} else {
-				Flasher::setFlash('Peminjaman berhasil diperbarui, tetapi notifikasi gagal dikirim!', 'warning', 'detail-peminjaman');
-				$this->redirect('user/detail-peminjaman/' . $idpinjam);
+				$msg = "Peminjaman dengan ID *$idpinjam* telah diperbarui dengan detail berikut.\nKegiatan: *$_POST[kegiatan]*\nTanggal: *$_POST[diperlukan_tanggal]*\nSesi: *$_POST[sesi]*\nRuang: *$_POST[ruang]*\nStatus: *" . $listStatus[$_POST['status']] . "*\nKeterangan: *$keterangan*";
+			}
+			$reply = [
+				"message" => $msg
+			];
+			$resp = $this->bot->sendFonnte($this->noWA, $reply);
+			$resp = json_decode($resp, true);
+
+			if ($resp['status']) {
+				Flasher::setFlash('Peminjaman berhasil diperbarui!', 'success', 'semua-peminjaman');
+				$this->redirect('user/semua-peminjaman');
+			} else {
+				Flasher::setFlash('Peminjaman berhasil diperbarui, tetapi notifikasi gagal dikirim!', 'warning', 'semua-peminjaman');
+				$this->redirect('user/semua-peminjaman');
 			}
 		} else {
 			Flasher::setFlash($res, 'warning', 'detail-peminjaman');
@@ -412,15 +426,27 @@ class User extends Controller
 		}
 
 		$detail = $this->model('PeminjamanModel')->getPeminjamanByIdPinjam($idpinjam);
+		$this->noWA = $this->model('UserModel')->getWAByUnit($this->model('PeminjamanModel')->getUnitByIdPinjam($idpinjam));
 		$res = $this->model('PeminjamanModel')->deletePeminjaman($idpinjam);
 		if ($res === 1) {
-			$resp = $this->bot->send("sendMessage", [
-				"parse_mode" => "Markdown",
-				"chat_id" => $this->chatID,
-				"text" => "Peminjaman dengan detail berikut telah dihapus oleh $this->unit.\nID Pinjam: *$idpinjam*.\nKegiatan: *$detail[kegiatan]*\nTanggal: *$detail[diperlukan_tanggal]*\nSesi: *$detail[sesi]*\nRuang: *$detail[ruang]*"
-			]);
+			$listStatus = [
+				1 => "Proses Persetujuan BAU",
+				2 => "Disetujui",
+				3 => "Ditolak"
+			];
 
-			if ($resp->ok) {
+			if ($this->unit != $this->model('PeminjamanModel')->getUnitByIdPinjam($idpinjam)) {
+				$msg = "Peminjaman dengan detail berikut telah dihapus oleh $this->unit.\nID Pinjam: *$idpinjam*.\nKegiatan: *$detail[kegiatan]*\nTanggal: *$detail[diperlukan_tanggal]*\nSesi: *$detail[sesi]*\nRuang: *$detail[ruang]*\nStatus: *" . $listStatus[$detail['status']] . "*";
+			} else {
+				$msg = "Peminjaman dengan detail berikut telah dihapus.\nID Pinjam: *$idpinjam*.\nKegiatan: *$detail[kegiatan]*\nTanggal: *$detail[diperlukan_tanggal]*\nSesi: *$detail[sesi]*\nRuang: *$detail[ruang]*\nStatus: *" . $listStatus[$detail['status']] . "*";
+			}
+			$reply = [
+				"message" => $msg
+			];
+			$resp = $this->bot->sendFonnte($this->noWA, $reply);
+			$resp = json_decode($resp, true);
+
+			if ($resp['status']) {
 				Flasher::setFlash('Peminjaman berhasil dihapus!', 'success', 'semua-peminjaman');
 				$this->redirect('user/semua-peminjaman');
 			} else {
@@ -506,11 +532,36 @@ class User extends Controller
 		}
 	}
 
+	// Tambah Pengguna
+	public function tambah_pengguna()
+	{
+		if ($this->level > 2) {
+			$this->redirect('forbidden');
+		}
+
+		if (isset($_SESSION['search_all'])) {
+			unset($_SESSION['search_all']);
+		}
+		if (isset($_SESSION['search_my'])) {
+			unset($_SESSION['search_my']);
+		}
+
+		$this->data['title'] = 'Tambah Pengguna';
+		$this->data['css'][2] = 'Dashboard/Form.css';
+		$this->data['js'][1] = 'Dashboard/tambahPengguna.js';
+
+		$this->partial('Dashboard/Header', $this->data);
+		$this->partial('Dashboard/Sidebar', $this->data);
+		$this->view('Dashboard/tambahPengguna', $this->data);
+		$this->partial('Dashboard/Footer', $this->data);
+	}
+
 	// Logout
 	public function logout()
 	{
 		session_unset();
 		session_destroy();
+		setcookie('remember_me', '', time() - 2592000, '/');
 		$this->redirect('login');
 	}
 }
