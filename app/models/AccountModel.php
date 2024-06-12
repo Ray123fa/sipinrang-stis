@@ -33,8 +33,8 @@ class AccountModel
 	public function register($data)
 	{
 		$username = $data['username'];
-		if (strpos($username, ' ') !== false) {
-			return "Username tidak boleh mengandung spasi!";
+		if (strpos($username, ' ') !== false || strpos($username, '_') !== false) {
+			return "Username tidak boleh mengandung spasi maupun underscore!";
 		}
 
 		$email = $data['email'];
