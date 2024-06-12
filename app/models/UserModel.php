@@ -18,12 +18,6 @@ class UserModel
 		return ($row) ? true : false;
 	}
 
-	public function isEmailSTIS($email)
-	{
-		$domain = explode('@', $email)[1];
-		return ($domain == 'stis.ac.id') ? true : false;
-	}
-
 	public function getAll()
 	{
 		$this->db->query('SELECT * FROM ' . $this->table . ' WHERE level <> 4');
@@ -49,7 +43,7 @@ class UserModel
 
 	public function countSearchUser($search)
 	{
-		$this->db->query('SELECT * FROM ' . $this->table . ' WHERE level <> 4 AND (username LIKE :search OR email LIKE :search OR unit LIKE :search OR level LIKE :search OR chat_id LIKE :search)');
+		$this->db->query('SELECT * FROM ' . $this->table . ' WHERE level <> 4 AND (username LIKE :search OR no_wa LIKE :search OR unit LIKE :search OR level LIKE :search)');
 		$this->db->bind(':search', "%$search%");
 		$this->db->execute();
 		$row = $this->db->rowCount();
@@ -59,7 +53,7 @@ class UserModel
 
 	public function searchUser($search, $start, $limit)
 	{
-		$this->db->query('SELECT * FROM ' . $this->table . ' WHERE level <> 4 AND (username LIKE :search OR email LIKE :search OR unit LIKE :search OR level LIKE :search OR chat_id LIKE :search) LIMIT :start, :limit');
+		$this->db->query('SELECT * FROM ' . $this->table . ' WHERE level <> 4 AND (username LIKE :search OR no_wa LIKE :search OR unit LIKE :search OR level LIKE :search) LIMIT :start, :limit');
 		$this->db->bind(':search', "%$search%");
 		$this->db->bind(':start', $start);
 		$this->db->bind(':limit', $limit);
@@ -104,13 +98,13 @@ class UserModel
 		return $row['level'];
 	}
 
-	public function getChatIdByUsername($username)
+	public function getWAByUnit($unit)
 	{
-		$this->db->query('SELECT chat_id FROM ' . $this->table . ' WHERE username = :username');
-		$this->db->bind(':username', $username);
+		$this->db->query('SELECT no_wa FROM ' . $this->table . ' WHERE unit = :unit');
+		$this->db->bind(':unit', $unit);
 		$row = $this->db->single();
 
-		return $row['chat_id'];
+		return $row['no_wa'];
 	}
 
 	public function getProfileImgPath($username)
@@ -129,10 +123,6 @@ class UserModel
 
 		if ($this->isExistUsername($data['username']) && $data['username'] != $tempUser) {
 			return "Username sudah terdaftar pada sistem!";
-		}
-
-		if ($this->isEmailSTIS($data['email']) == false) {
-			return "Email harus berdomain STIS!";
 		}
 
 		if (!empty($_FILES['profile_img']['name'])) {
@@ -161,9 +151,9 @@ class UserModel
 
 			// Pindahkan file ke folder upload
 			if (move_uploaded_file($sourceFile, $targetFile)) {
-				$this->db->query('UPDATE ' . $this->table . ' SET username = :username, email = :email, profile_img_path = :profile_img_path WHERE id = :id');
+				$this->db->query('UPDATE ' . $this->table . ' SET username = :username, no_wa = :no_wa, profile_img_path = :profile_img_path WHERE id = :id');
 				$this->db->bind(':username', $data['username']);
-				$this->db->bind(':email', $data['email']);
+				$this->db->bind(':no_wa', $data['no_wa']);
 				$this->db->bind(':profile_img_path', $targetFile);
 				$this->db->bind(':id', $data['id']);
 				$this->db->execute();
@@ -171,9 +161,9 @@ class UserModel
 				return "Gagal mengubah profil!";
 			}
 		} else {
-			$this->db->query('UPDATE ' . $this->table . ' SET username = :username, email = :email WHERE id = :id');
+			$this->db->query('UPDATE ' . $this->table . ' SET username = :username, no_wa = :no_wa WHERE id = :id');
 			$this->db->bind(':username', $data['username']);
-			$this->db->bind(':email', $data['email']);
+			$this->db->bind(':no_wa', $data['no_wa']);
 			$this->db->bind(':id', $data['id']);
 			$this->db->execute();
 		}
@@ -208,47 +198,6 @@ class UserModel
 			}
 		} else {
 			return "Password lama salah";
-		}
-	}
-
-	public function addChatID($username, $chatID)
-	{
-		$this->db->query('SELECT chat_id FROM ' . $this->table . ' WHERE username = :username');
-		$this->db->bind(':username', $username);
-		$row = $this->db->single();
-
-		if ($row['chat_id'] != null) {
-			if ($row['chat_id'] == $chatID) {
-				$msg = "Akun Sipinrang ini telah ditautkan dengan akun telegram ini sebelumnya.\n";
-			} else {
-				$msg = "Akun Sipinrang telah ditautkan dengan akun telegram lain.\n";
-				$msg .= "Gunakan perintah /disconnect untuk memutuskan tautan akun telegram sebelumnya.\n";
-			}
-			return $msg;
-		} else {
-			$this->db->query('UPDATE ' . $this->table . ' SET chat_id = :chat_id WHERE username = :username');
-			$this->db->bind(':chat_id', $chatID);
-			$this->db->bind(':username', $username);
-			$this->db->execute();
-
-			if ($this->db->rowCount() > 0) {
-				return "Akun telegram berhasil dihubungkan dengan akun Sipinrang.";
-			} else {
-				return "Gagal menghubungkan akun telegram dengan akun Sipinrang.";
-			}
-		}
-	}
-
-	public function removeChatID($username)
-	{
-		$this->db->query('UPDATE ' . $this->table . ' SET chat_id = NULL WHERE username = :username');
-		$this->db->bind(':username', $username);
-		$this->db->execute();
-
-		if ($this->db->rowCount() > 0) {
-			return "Akun telegram berhasil diputuskan dari akun Sipinrang.";
-		} else {
-			return "Gagal memutuskan tautan akun telegram dengan akun Sipinrang.";
 		}
 	}
 }
