@@ -5,6 +5,13 @@ class Login extends Controller
 
 	public function __construct()
 	{
+		// Check remember me
+		if (isset($_COOKIE['remember_me']) && !isset($_SESSION['user'])) {
+			$cookie = $_COOKIE['remember_me'];
+			$cookie = CookieHandler::decrypt($cookie, 'REMEMBER_ME');
+			$_SESSION['user'] = $cookie;
+		}
+
 		if (isset($_SESSION['user'])) {
 			$this->redirect('user');
 		}
