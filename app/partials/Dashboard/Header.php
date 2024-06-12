@@ -34,8 +34,10 @@
 					<img class="rounded-circle mr-2" src="<?php
 																								if ($data['profile_img'] == null) {
 																									echo 'img/profile.png';
-																								} else {
+																								} else if (file_exists($data['profile_img'])) {
 																									echo $data['profile_img'];
+																								} else {
+																									echo 'img/profile.png';
 																								}
 																								?>" alt="Foto Profil" width="30" height="30">
 					<span class="mr-2" id="user"><?= $data['unit'] ?></span>
