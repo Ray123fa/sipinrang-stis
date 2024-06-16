@@ -31,6 +31,11 @@
 <body class="bg-gradient-primary">
 	<div class="wrapper bg-gradient-primary">
 		<div class="box bg-light shadow">
+			<div class="d-flex justify-content-start w-full text-xl mb-2">
+				<a href="/" class="text-primary text-decoration-none">
+					<i class="fas fa-arrow-left-long"></i>
+				</a>
+			</div>
 			<div class="logo">
 				<img src="img/logo.png" alt="Logo STIS" width="75">
 			</div>

@@ -5,10 +5,17 @@
 			<h1 class="hero-title">Selamat Datang di Sipinrang STIS</h1>
 			<p class="hero-desc">Sistem Informasi Peminjaman Ruang STIS</p>
 			<br>
-			<a href="login" class="px-4 py-2 btn-login">
-				<i class="fas fa-arrow-up-right-from-square"></i>
-				Login
-			</a>
+			<?php if (!isset($_SESSION['user'])) : ?>
+				<a href="login" class="px-4 py-2 btn">
+					<i class="fas fa-arrow-up-right-from-square"></i>
+					Login
+				</a>
+			<?php else : ?>
+				<a href="dashboard" class="px-4 py-2 btn">
+					<i class="fas fa-arrow-up-right-from-square"></i>
+					Dashboard
+				</a>
+			<?php endif; ?>
 		</div>
 	</section>
 

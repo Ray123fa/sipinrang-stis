@@ -10,10 +10,17 @@
 		<li class="nav-link py-1"><a class="px-4 py-2 scroll-link" href="#faq">FAQ</a></li>
 		<li class="nav-link py-1"><a class="px-4 py-2 scroll-link" href="#services">Layanan</a></li>
 		<li class="nav-link py-1">
-			<a class="px-4 py-2" href="/login">
-				<i class="fas fa-arrow-right-to-bracket"></i>
-				Login
-			</a>
+			<?php if (!isset($_SESSION['user'])) : ?>
+				<a class="px-4 py-2" href="/login">
+					<i class="fas fa-arrow-right-to-bracket"></i>
+					Login
+				</a>
+			<?php else : ?>
+				<a class="px-4 py-2" href="/user/logout">
+					Logout
+					<i class="fas fa-arrow-right-from-bracket"></i>
+				</a>
+			<?php endif; ?>
 		</li>
 	</ul>
 	<span class="z-1000 fs-3" id="mobile-nav"><i class="fas fa-bars-staggered"></i></span>
