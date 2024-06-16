@@ -9,92 +9,33 @@ class AccountModel
 		$this->db = new Database();
 	}
 
+	public function isClickRemember($data, $remember)
+	{
+		if ($remember) {
+			$cookieUsername = CookieHandler::encrypt($data['username'], 'REMEMBER_ME');
+			$cookiePassword = CookieHandler::encrypt($data['password'], 'REMEMBER_ME');
+			setcookie('username', $cookieUsername, time() + 60 * 60 * 24 * 30, '/');
+			setcookie('password', $cookiePassword, time() + 60 * 60 * 24 * 30, '/');
+		} else {
+			setcookie('username', '', time() - 2592000, '/');
+			setcookie('password', '', time() - 2592000, '/');
+		}
+	}
+
 	public function login($data)
 	{
-		if ($data['remember']) {
-			$cookie = CookieHandler::encrypt($data['username'], 'REMEMBER_ME');
-			setcookie('remember_me', $cookie, time() + 60 * 60 * 24 * 30, '/');
-		}
-
 		$this->db->query('SELECT * FROM ' . $this->table . ' WHERE username = :username');
 		$this->db->bind(':username', strtolower($data['username']));
 		$row = $this->db->single();
 
 		if ($this->db->rowCount() > 0) {
 			if (password_verify($data['password'], $row['password'])) {
+				$this->isClickRemember($data, $data['remember']);
 				return true;
 			}
 			return false;
 		}
 
 		return false;
-	}
-
-	public function register($data)
-	{
-		$username = $data['username'];
-		if (strpos($username, ' ') !== false || strpos($username, '_') !== false) {
-			return "Username tidak boleh mengandung spasi maupun underscore!";
-		}
-
-		$email = $data['email'];
-		$unit = $data['unit'];
-		$password = $data['password'];
-		$repassword = $data['repassword'];
-		$level = $data['level'];
-
-		// Cek apakah username sudah ada
-		$this->db->query('SELECT username FROM ' . $this->table . ' WHERE username = :username');
-		$this->db->bind(':username', $username);
-		$this->db->single();
-
-		if ($this->db->rowCount() > 0) {
-			return "Username sudah terdaftar pada sistem!";
-		}
-
-		// Cek apakah unit sudah ada
-		$this->db->query('SELECT unit FROM ' . $this->table . ' WHERE unit = :unit');
-		$this->db->bind(':unit', $unit);
-		$this->db->single();
-
-		if ($this->db->rowCount() > 0) {
-			return "Unit sudah terdaftar pada sistem!";
-		}
-
-		// Cek apakah email berdomain STIS
-		$domain = explode('@', $email)[1];
-		if ($domain != 'stis.ac.id') {
-			return "Email harus berdomain STIS!";
-		}
-
-		// Cek apakah email sudah ada
-		$this->db->query('SELECT email FROM ' . $this->table . ' WHERE email = :email');
-		$this->db->bind(':email', $email);
-		$this->db->single();
-
-		if ($this->db->rowCount() > 0) {
-			return "Email sudah terdaftar pada sistem!";
-		}
-
-		// Cek apakah password dan repassword sama
-		if ($password != $repassword) {
-			return "Password dan konfirmasi password tidak sesuai!";
-		}
-		$password = password_hash($password, PASSWORD_DEFAULT);
-
-		// Insert data ke database
-		$this->db->query('INSERT INTO ' . $this->table . ' (username, email, unit, password, level) VALUES (:username, :email, :unit, :password, :level)');
-		$this->db->bind(':username', $username);
-		$this->db->bind(':email', $email);
-		$this->db->bind(':unit', $unit);
-		$this->db->bind(':password', $password);
-		$this->db->bind(':level', $level);
-
-		$this->db->execute();
-		if ($this->db->rowCount() > 0) {
-			return true;
-		} else {
-			return "Gagal menambahkan data!";
-		}
 	}
 }
