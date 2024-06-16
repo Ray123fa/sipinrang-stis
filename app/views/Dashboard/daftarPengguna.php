@@ -68,8 +68,13 @@ $numEnd = $numStart + count($data['users']) - 1;
 									<td class="text-center"><?= $user['unit'] ?></td>
 									<td class="text-center"><?= ($user['no_wa'] == '') ? '-' : $user['no_wa'] ?></td>
 									<td class="text-center">
-										<!-- <select class="p-2 border-radius-1" name="level" <?= ($user['level'] < 2) ? 'disabled' : (($data['unit'] == $user['unit']) ? 'disabled' : '') ?> onchange="updateLevel('<?= $user['id'] ?>', this.value)"> -->
-										<select class="p-2 border-radius-1" name="level" <?= ($user['level'] == 1 || $data['unit'] == $user['unit']) ? 'disabled' : '' ?> onchange="updateLevel('<?= $user['id'] ?>', this.value)">
+										<select class="p-2 border-radius-1" name="level" <?php
+																																			if ($user['level'] == 1 && $data['level'] == 1 && $data['unit'] == $user['unit']) {
+																																				echo 'disabled';
+																																			} elseif ($user['level'] == 1 && $data['level'] != 1) {
+																																				echo 'disabled';
+																																			}
+																																			?> onchange="updateLevel('<?= $user['id'] ?>', this.value)">
 											<option value="1" <?= ($user['level'] == 1) ? 'selected' : (($data['level'] == 1) ? '' : 'disabled'); ?>>Superadmin</option>
 											<option value="2" <?= ($user['level'] == 2) ? 'selected' : '' ?>>Admin</option>
 											<option value="3" <?= ($user['level'] == 3) ? 'selected' : '' ?>>User</option>
