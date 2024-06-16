@@ -10,6 +10,13 @@
 
 	<?= Favicon::show() ?>
 
+	<!-- Preconnect -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+	<!-- Fonts -->
+	<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+
 	<link rel="stylesheet" href="css/utilities.css">
 	<?php
 	if (isset($data['css'])) {

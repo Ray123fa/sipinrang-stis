@@ -44,7 +44,7 @@ aside {
   left: -12rem;
 }
 h1.sidebar-brand {
-  font-size: 19px;
+  font-size: 21px;
   font-weight: bold;
 }
 .sidebar-list li {
@@ -151,7 +151,7 @@ main {
   }
 
   h1.sidebar-brand {
-    font-size: 16px;
+    font-size: 17px;
   }
 
   #filtered {

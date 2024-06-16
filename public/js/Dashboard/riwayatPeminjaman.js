@@ -2,26 +2,26 @@ const entries = document.getElementById("entries");
 const filterStatus = document.getElementById("filter-status");
 
 function sendLimitStatus() {
-  sessionStorage.setItem("entries", entries.value);
-  sessionStorage.setItem("filterStatus", filterStatus.value);
+  sessionStorage.setItem("entries-riwayat-peminjaman", entries.value);
+  sessionStorage.setItem("filterStatus-riwayat-peminjaman", filterStatus.value);
 
   const xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function () {
     if (xhr.readyState == 4 && xhr.status == 200) {
       const result = document.getElementById("result");
       result.innerHTML = xhr.responseText;
-      window.history.pushState({}, null, `user/riwayat-peminjaman/1`);
+      window.history.pushState({}, null, `dashboard/riwayat-peminjaman/1`);
     }
   };
-  xhr.open("POST", `user/riwayat-peminjaman`, true);
+  xhr.open("POST", `dashboard/riwayat-peminjaman`, true);
   xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-  xhr.send(`limit=${entries.value}&status=${filterStatus.value}`);
+  xhr.send(`limit-riwayat=${entries.value}&status-riwayat=${filterStatus.value}`);
 }
 
 const optionEntries = document.querySelectorAll(".option-entries");
-if (sessionStorage.getItem("entries")) {
+if (sessionStorage.getItem("entries-riwayat-peminjaman")) {
   optionEntries.forEach((opt) => {
-    if (opt.value == sessionStorage.getItem("entries")) {
+    if (opt.value == sessionStorage.getItem("entries-riwayat-peminjaman")) {
       opt.selected = true;
     }
   });
@@ -29,9 +29,9 @@ if (sessionStorage.getItem("entries")) {
 entries.addEventListener("change", sendLimitStatus);
 
 const optionFilterStatus = document.querySelectorAll(".option-filter-status");
-if (sessionStorage.getItem("filterStatus")) {
+if (sessionStorage.getItem("filterStatus-riwayat-peminjaman")) {
   optionFilterStatus.forEach((opt) => {
-    if (opt.value == sessionStorage.getItem("filterStatus")) {
+    if (opt.value == sessionStorage.getItem("filterStatus-riwayat-peminjaman")) {
       opt.selected = true;
     }
   });
@@ -45,7 +45,7 @@ search.addEventListener("keyup", () => {
     if (xhr.readyState == 4 && xhr.status == 200) {
       const result = document.getElementById("result");
       result.innerHTML = xhr.responseText;
-      window.history.pushState({}, null, `user/riwayat-peminjaman/1`);
+      window.history.pushState({}, null, `dashboard/riwayat-peminjaman/1`);
     }
   };
 
@@ -61,7 +61,7 @@ search.addEventListener("keyup", () => {
 
 function deletePeminjaman(idpinjam) {
   const confirmation = confirm("Apakah anda yakin ingin menghapus data ini?");
-  confirmation ? (window.location.href = `user/do-delete-peminjaman/${idpinjam}`) : null;
+  confirmation ? (window.location.href = `peminjaman/delete/${idpinjam}`) : null;
 }
 
 function updateStatus(id, status) {

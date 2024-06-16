@@ -1,9 +1,3 @@
-<?php
-if ($data['no_wa'] == null) {
-	Flasher::setFlash("Mohon lengkapi/perbarui profil Anda terlebih dahulu", "warning", "profile");
-}
-?>
-
 <main>
 	<h2>Profil Anda</h2>
 
@@ -36,14 +30,14 @@ if ($data['no_wa'] == null) {
 					<td><label for="username">Username</label></td>
 					<td>
 						<label class="mb-1" for="username">Username</label>
-						<input autocomplete="off" class="form-input" type="text" name="username" id="username" value="<?= $data['username'] ?>" required>
+						<input autocomplete="off" class="form-input" type="text" name="username" id="username" value="<?= $data['username'] ?>" minlength="3" required>
 					</td>
 				</tr>
 				<tr>
 					<td><label for="no_wa">No. WhatsApp</label></td>
 					<td>
 						<label class="mb-1" for="no_wa">No. WhatsApp</label>
-						<input autocomplete="off" class="form-input" type="tel" placeholder="+6281234567890" pattern="^\+62[0-9]{9,13}$" name="no_wa" id="no_wa" value="<?= $data['no_wa'] ?>" required>
+						<input autocomplete="off" class="form-input" type="tel" placeholder="+6281234567890" pattern="^\+62[0-9]{9,13}$" name="no_wa" id="no_wa" value="<?= $data['no_wa'] ?>">
 						<small>Format: +62 diikuti oleh 9-13 digit angka</small>
 					</td>
 				</tr>

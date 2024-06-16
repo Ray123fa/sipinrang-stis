@@ -10,6 +10,13 @@
 
 	<?= Favicon::show() ?>
 
+	<!-- Preconnect -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+	<!-- Fonts -->
+	<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+
 	<link rel="stylesheet" href="css/utilities.css">
 	<?php
 	if (isset($data['css'])) {
@@ -49,7 +56,7 @@
 
 		<ul class="d-none profile-dropdown-list list-style-none py-2">
 			<?php if ($data['level'] != 4) : ?>
-				<li class="px-4 mb-2 border-radius-1"><a class="d-block text-decoration-none" href="user/profile">Edit Profile</a></li>
+				<li class="px-4 mb-2 border-radius-1"><a class="d-block text-decoration-none" href="dashboard/profile">Edit Profile</a></li>
 			<?php endif; ?>
 			<li class="px-4 border-radius-1"><a class="d-block text-decoration-none" href="user/logout">Logout</a></li>
 		</ul>

@@ -37,11 +37,11 @@
 				</li>
 				<li class="pb-4">
 					<h3>Bagaimana cara melihat jadwal peminjaman saya?</h3>
-					<p class="content-desc">Untuk melihat jadwal peminjaman, silahkan login terlebih dahulu. Setelah login, pilih menu "Peminjaman Saya".</p>
+					<p class="content-desc">Untuk melihat jadwal peminjaman, silahkan login terlebih dahulu. Setelah login, pilih menu "Riwayat Peminjaman".</p>
 				</li>
 				<li>
 					<h3>Bagaimana bila ingin melihat jadwal peminjaman, namun tidak memiliki akun?</h3>
-					<p class="content-desc">Anda bisa melakukan <a href="/register" class="text-decoration-none text-primary">registrasi</a> atau <a href="/login/guest" class="text-decoration-none text-primary">login sebagai tamu</a> untuk melihat jadwal peminjaman ruang.</p>
+					<p class="content-desc">Anda bisa <a href="/login/guest" class="text-decoration-none text-primary">login sebagai tamu</a> untuk melihat jadwal peminjaman ruang.</p>
 				</li>
 			</ol>
 		</section>

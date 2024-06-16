@@ -4,7 +4,7 @@
 	<h2>Detail Peminjaman</h2>
 
 	<section class="mt-4" id="detail-peminjaman">
-		<form class="box shadow bg-light" action="user/do-edit-peminjaman/<?= $data['peminjaman']['id_pinjam'] ?>" method="POST" style="max-width:40rem">
+		<form class="box shadow bg-light" action="peminjaman/edit/<?= $data['peminjaman']['id_pinjam'] ?>" method="POST" style="max-width:40rem">
 			<?php Flasher::flash("detail-peminjaman") ?>
 
 			<table>

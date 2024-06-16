@@ -29,13 +29,14 @@ class Api extends Controller
 
 	public function index()
 	{
-		$this->redirect('user');
+		$this->redirect('dashboard');
 	}
 
+	// Cari Semua Peminjaman
 	public function search_semua_peminjaman()
 	{
 		if (!isset($_POST['search']) || !isset($_POST['limit'])) {
-			$this->redirect('user/semua-peminjaman');
+			$this->redirect('dashboard/semua-peminjaman');
 		}
 
 		$search = $_POST['search'];
@@ -61,10 +62,11 @@ class Api extends Controller
 		$this->helper('Dashboard/semuaPeminjaman', $this->data);
 	}
 
+	// Cari Riwayat Peminjaman
 	public function search_riwayat_peminjaman()
 	{
 		if (!isset($_POST['search']) || !isset($_POST['limit'])) {
-			$this->redirect('user/riwayat-peminjaman');
+			$this->redirect('dashboard/riwayat-peminjaman');
 		}
 
 		$search = $_POST['search'];
@@ -90,10 +92,11 @@ class Api extends Controller
 		$this->helper('Dashboard/riwayatPeminjaman', $this->data);
 	}
 
+	// Cari User
 	public function search_user()
 	{
 		if (!isset($_POST['search']) || !isset($_POST['limit-user'])) {
-			$this->redirect('user/daftar-pengguna');
+			$this->redirect('dashboard/daftar-pengguna');
 		}
 
 		$search = $_POST['search'];
@@ -151,5 +154,15 @@ class Api extends Controller
 			];
 			$this->bot->sendFonnte($noWA, $reply);
 		}
+	}
+
+	// Update Level User
+	public function update_level_user($id, $level)
+	{
+		if ($this->level > 2) {
+			$this->redirect('forbidden');
+		}
+
+		$res = $this->model('UserModel')->updateLevelUser($id, $level);
 	}
 }

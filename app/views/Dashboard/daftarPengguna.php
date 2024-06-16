@@ -26,7 +26,8 @@ $numEnd = $numStart + count($data['users']) - 1;
 <!-- End -->
 
 <main>
-	<h3>Daftar Pengguna</h3>
+	<h3 class="mb-4">Daftar Pengguna</h3>
+	<?php Flasher::flash("daftar-pengguna") ?>
 
 	<div class="wrapper bg-light p-4 my-4">
 		<div class="d-flex gap-2 justify-content-between align-items-center py-2" id="top-table">
@@ -67,14 +68,15 @@ $numEnd = $numStart + count($data['users']) - 1;
 									<td class="text-center"><?= $user['unit'] ?></td>
 									<td class="text-center"><?= ($user['no_wa'] == '') ? '-' : $user['no_wa'] ?></td>
 									<td class="text-center">
-										<select class="p-2 border-radius-1" name="level" <?= ($user['level'] < 2) ? 'disabled' : '' ?> onchange="confirm('tes')">
+										<!-- <select class="p-2 border-radius-1" name="level" <?= ($user['level'] < 2) ? 'disabled' : (($data['unit'] == $user['unit']) ? 'disabled' : '') ?> onchange="updateLevel('<?= $user['id'] ?>', this.value)"> -->
+										<select class="p-2 border-radius-1" name="level" <?= ($user['level'] == 1 || $data['unit'] == $user['unit']) ? 'disabled' : '' ?> onchange="updateLevel('<?= $user['id'] ?>', this.value)">
 											<option value="1" <?= ($user['level'] == 1) ? 'selected' : (($data['level'] == 1) ? '' : 'disabled'); ?>>Superadmin</option>
 											<option value="2" <?= ($user['level'] == 2) ? 'selected' : '' ?>>Admin</option>
 											<option value="3" <?= ($user['level'] == 3) ? 'selected' : '' ?>>User</option>
 										</select>
 									</td>
 									<td class="text-center">
-										<a class="text-decoration-none text-danger px-1 <?= ($user['level'] < 3) ? 'cursor-not-allowed' : 'cursor-pointer' ?>" href="<?= ($user['level'] < 3) ? 'user/daftar-pengguna/#' : 'user/delete-pengguna/' . $user['id'] ?>">
+										<a class="text-decoration-none text-danger px-1 <?= ($user['level'] < 3) ? 'cursor-not-allowed' : 'cursor-pointer' ?>" onclick="deleteUser(<?= $user['level'] . ',' . $user['id'] ?>)">
 											<i class="fas fa-trash"></i>
 										</a>
 									</td>
@@ -93,21 +95,21 @@ $numEnd = $numStart + count($data['users']) - 1;
 						<!-- Paginate Button Start -->
 						<ul class="d-flex flex-wrap row-gap-5 list-style-none" id="paginate">
 							<?php if ($data['totalHalaman'] != 5 && $data['currPage'] > 3) : ?>
-								<li><a class="p-2 text-decoration-none bg-gray" href="user/daftar-pengguna/1">&lt;&lt;</a></li>
-								<li><a class="p-2 text-decoration-none bg-gray" href="user/daftar-pengguna/<?= $data['currPage'] - 1 ?>">&lt;</a></li>
+								<li><a class="p-2 text-decoration-none bg-gray" href="dashboard/daftar-pengguna/1">&lt;&lt;</a></li>
+								<li><a class="p-2 text-decoration-none bg-gray" href="dashboard/daftar-pengguna/<?= $data['currPage'] - 1 ?>">&lt;</a></li>
 							<?php endif; ?>
 
 							<?php if ($data['totalHalaman'] > 1) : ?>
 								<?php for ($i = $startPage; $i <= $endPage; $i++) : ?>
 									<li>
-										<a class="p-2 text-decoration-none <?= $data['currPage'] == $i ? 'curr-page' : 'bg-gray'; ?>" href="user/daftar-pengguna/<?= $i ?>"><?= $i ?></a>
+										<a class="p-2 text-decoration-none <?= $data['currPage'] == $i ? 'curr-page' : 'bg-gray'; ?>" href="dashboard/daftar-pengguna/<?= $i ?>"><?= $i ?></a>
 									</li>
 								<?php endfor; ?>
 							<?php endif; ?>
 
 							<?php if ($data['totalHalaman'] != 5 && $data['currPage'] < $data['totalHalaman'] - 2) : ?>
-								<li><a class="p-2 text-decoration-none bg-gray" href="user/daftar-pengguna/<?= $data['currPage'] + 1; ?>">&gt;</a></li>
-								<li><a class="p-2 text-decoration-none bg-gray" href="user/daftar-pengguna/<?= $data['totalHalaman'] ?>">&gt;&gt;</a></li>
+								<li><a class="p-2 text-decoration-none bg-gray" href="dashboard/daftar-pengguna/<?= $data['currPage'] + 1; ?>">&gt;</a></li>
+								<li><a class="p-2 text-decoration-none bg-gray" href="dashboard/daftar-pengguna/<?= $data['totalHalaman'] ?>">&gt;&gt;</a></li>
 							<?php endif; ?>
 						</ul>
 						<!-- Paginate Button End -->

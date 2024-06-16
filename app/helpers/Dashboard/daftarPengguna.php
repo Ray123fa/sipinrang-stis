@@ -57,7 +57,7 @@ $numEnd = $numStart + count($data['users']) - 1;
 							</select>
 						</td>
 						<td class="text-center">
-							<a class="text-decoration-none text-danger px-1 cursor-pointer" href="user/daftar-pengguna/#">
+							<a class="text-decoration-none text-danger px-1 cursor-pointer" href="dashboard/daftar-pengguna/#">
 								<i class="fas fa-trash"></i>
 							</a>
 						</td>
@@ -76,21 +76,21 @@ $numEnd = $numStart + count($data['users']) - 1;
 			<!-- Paginate Button Start -->
 			<ul class="d-flex flex-wrap row-gap-5 list-style-none" id="paginate">
 				<?php if ($data['totalHalaman'] != 5 && $data['currPage'] > 3) : ?>
-					<li><a class="p-2 text-decoration-none bg-gray" href="user/daftar-pengguna/1">&lt;&lt;</a></li>
-					<li><a class="p-2 text-decoration-none bg-gray" href="user/daftar-pengguna/<?= $data['currPage'] - 1 ?>">&lt;</a></li>
+					<li><a class="p-2 text-decoration-none bg-gray" href="dashboard/daftar-pengguna/1">&lt;&lt;</a></li>
+					<li><a class="p-2 text-decoration-none bg-gray" href="dashboard/daftar-pengguna/<?= $data['currPage'] - 1 ?>">&lt;</a></li>
 				<?php endif; ?>
 
 				<?php if ($data['totalHalaman'] > 1) : ?>
 					<?php for ($i = $startPage; $i <= $endPage; $i++) : ?>
 						<li>
-							<a class="p-2 text-decoration-none <?= $data['currPage'] == $i ? 'curr-page' : 'bg-gray'; ?>" href="user/daftar-pengguna/<?= $i ?>"><?= $i ?></a>
+							<a class="p-2 text-decoration-none <?= $data['currPage'] == $i ? 'curr-page' : 'bg-gray'; ?>" href="dashboard/daftar-pengguna/<?= $i ?>"><?= $i ?></a>
 						</li>
 					<?php endfor; ?>
 				<?php endif; ?>
 
 				<?php if ($data['totalHalaman'] != 5 && $data['currPage'] < $data['totalHalaman'] - 2) : ?>
-					<li><a class="p-2 text-decoration-none bg-gray" href="user/daftar-pengguna/<?= $data['currPage'] + 1; ?>">&gt;</a></li>
-					<li><a class="p-2 text-decoration-none bg-gray" href="user/daftar-pengguna/<?= $data['totalHalaman'] ?>">&gt;&gt;</a></li>
+					<li><a class="p-2 text-decoration-none bg-gray" href="dashboard/daftar-pengguna/<?= $data['currPage'] + 1; ?>">&gt;</a></li>
+					<li><a class="p-2 text-decoration-none bg-gray" href="dashboard/daftar-pengguna/<?= $data['totalHalaman'] ?>">&gt;&gt;</a></li>
 				<?php endif; ?>
 			</ul>
 			<!-- Paginate Button End -->

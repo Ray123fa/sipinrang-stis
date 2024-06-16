@@ -200,4 +200,46 @@ class UserModel
 			return "Password lama salah";
 		}
 	}
+
+	public function addUser($data)
+	{
+		if ($this->isExistUsername($data['username'])) {
+			return "Username sudah terdaftar pada sistem!";
+		}
+
+		$password = password_hash($data['password'], PASSWORD_DEFAULT);
+
+		$this->db->query('INSERT INTO ' . $this->table . ' (username, password, no_wa, unit, level) VALUES (:username, :password, :no_wa, :unit, :level)');
+		$this->db->bind(':username', $data['username']);
+		$this->db->bind(':password', $password);
+		if ($data['no_wa'] == '') {
+			$this->db->bind(':no_wa', null);
+		} else {
+			$this->db->bind(':no_wa', $data['no_wa']);
+		}
+		$this->db->bind(':unit', $data['unit']);
+		$this->db->bind(':level', $data['level']);
+		$this->db->execute();
+
+		return true;
+	}
+
+	public function deleteUser($id)
+	{
+		$this->db->query('DELETE FROM ' . $this->table . ' WHERE id = :id');
+		$this->db->bind(':id', $id);
+		$this->db->execute();
+
+		return $this->db->rowCount();
+	}
+
+	public function updateLevelUser($id, $level)
+	{
+		$this->db->query('UPDATE ' . $this->table . ' SET level = :level WHERE id = :id');
+		$this->db->bind(':level', $level);
+		$this->db->bind(':id', $id);
+		$this->db->execute();
+
+		return $this->db->rowCount();
+	}
 }

@@ -61,7 +61,7 @@ $numEnd = $numStart + count($data['peminjaman']) - 1;
 							</select>
 						</td>
 						<td class="text-center">
-							<a href="user/detail-peminjaman/<?= $peminjaman['id_pinjam'] ?>" class="text-decoration-none text-primary px-1">
+							<a href="dashboard/detail-peminjaman/<?= $peminjaman['id_pinjam'] ?>" class="text-decoration-none text-primary px-1">
 								<i class="fas fa-eye"></i>
 							</a>
 						</td>
@@ -85,21 +85,21 @@ $numEnd = $numStart + count($data['peminjaman']) - 1;
 			<!-- Paginate Button Start -->
 			<ul class="d-flex flex-wrap row-gap-5 list-style-none" id="paginate">
 				<?php if ($data['totalHalaman'] != 5 && $data['currPage'] > 3) : ?>
-					<li><a class="p-2 text-decoration-none bg-gray" href="user/riwayat-peminjaman/1">&lt;&lt;</a></li>
-					<li><a class="p-2 text-decoration-none bg-gray" href="user/riwayat-peminjaman/<?= $data['currPage'] - 1 ?>">&lt;</a></li>
+					<li><a class="p-2 text-decoration-none bg-gray" href="dashboard/riwayat-peminjaman/1">&lt;&lt;</a></li>
+					<li><a class="p-2 text-decoration-none bg-gray" href="dashboard/riwayat-peminjaman/<?= $data['currPage'] - 1 ?>">&lt;</a></li>
 				<?php endif; ?>
 
 				<?php if ($data['totalHalaman'] > 1) : ?>
 					<?php for ($i = $startPage; $i <= $endPage; $i++) : ?>
 						<li>
-							<a class="p-2 text-decoration-none <?= $data['currPage'] == $i ? 'curr-page' : 'bg-gray'; ?>" href="user/riwayat-peminjaman/<?= $i ?>"><?= $i ?></a>
+							<a class="p-2 text-decoration-none <?= $data['currPage'] == $i ? 'curr-page' : 'bg-gray'; ?>" href="dashboard/riwayat-peminjaman/<?= $i ?>"><?= $i ?></a>
 						</li>
 					<?php endfor; ?>
 				<?php endif; ?>
 
 				<?php if ($data['totalHalaman'] != 5 && $data['currPage'] < $data['totalHalaman'] - 2) : ?>
-					<li><a class="p-2 text-decoration-none bg-gray" href="user/riwayat-peminjaman/<?= $data['currPage'] + 1; ?>">&gt;</a></li>
-					<li><a class="p-2 text-decoration-none bg-gray" href="user/riwayat-peminjaman/<?= $data['totalHalaman'] ?>">&gt;&gt;</a></li>
+					<li><a class="p-2 text-decoration-none bg-gray" href="dashboard/riwayat-peminjaman/<?= $data['currPage'] + 1; ?>">&gt;</a></li>
+					<li><a class="p-2 text-decoration-none bg-gray" href="dashboard/riwayat-peminjaman/<?= $data['totalHalaman'] ?>">&gt;&gt;</a></li>
 				<?php endif; ?>
 			</ul>
 			<!-- Paginate Button End -->

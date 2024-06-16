@@ -16,10 +16,10 @@ entries.addEventListener("change", () => {
     if (xhr.readyState == 4 && xhr.status == 200) {
       const result = document.getElementById("result");
       result.innerHTML = xhr.responseText;
-      window.history.pushState({}, null, `user/daftar-pengguna/1`);
+      window.history.pushState({}, null, `dashboard/daftar-pengguna/1`);
     }
   };
-  xhr.open("POST", `user/daftar-pengguna`, true);
+  xhr.open("POST", `dashboard/daftar-pengguna`, true);
   xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
   xhr.send(`limit-user=${entries.value}`);
 });
@@ -30,9 +30,8 @@ search.addEventListener("keyup", () => {
   xhr.onreadystatechange = function () {
     if (xhr.readyState == 4 && xhr.status == 200) {
       const result = document.getElementById("result");
-      console.log(xhr.responseText);
       result.innerHTML = xhr.responseText;
-      window.history.pushState({}, null, `user/daftar-pengguna/1`);
+      window.history.pushState({}, null, `dashboard/daftar-pengguna/1`);
     }
   };
 
@@ -44,3 +43,28 @@ search.addEventListener("keyup", () => {
   xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
   xhr.send(data);
 });
+
+function updateLevel(id, level) {
+  const xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState == 4 && xhr.status == 200) {
+      window.location.reload();
+    }
+  };
+  xhr.open("GET", `api/update-level-user/${id}/${level}`, true);
+  xhr.send();
+}
+
+function deleteUser(level, id) {
+  if (level < 3) {
+    alert("Superadmin dan admin tidak bisa dihapus!");
+    return;
+  }
+
+  const res = confirm("Apakah anda yakin ingin menghapus pengguna ini? \nPerhatian: Semua data yang berkaitan dengan pengguna ini akan ikut terhapus!");
+  if (res) {
+    window.location.href = `user/delete/${id}`;
+  } else {
+    return;
+  }
+}

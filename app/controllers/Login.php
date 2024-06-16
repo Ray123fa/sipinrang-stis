@@ -1,22 +1,25 @@
 <?php
 class Login extends Controller
 {
-	private $call;
+	private $account;
+	private $cookie;
 
 	public function __construct()
 	{
 		// Check remember me
-		if (isset($_COOKIE['remember_me']) && !isset($_SESSION['user'])) {
-			$cookie = $_COOKIE['remember_me'];
-			$cookie = CookieHandler::decrypt($cookie, 'REMEMBER_ME');
-			$_SESSION['user'] = $cookie;
+		if ((isset($_COOKIE['username']) && isset($_COOKIE['password'])) && !isset($_SESSION['user'])) {
+			$this->cookie = [
+				'username' => CookieHandler::decrypt($_COOKIE['username'], 'REMEMBER_ME'),
+				'password' => CookieHandler::decrypt($_COOKIE['password'], 'REMEMBER_ME'),
+				'remember' => 'checked'
+			];
 		}
 
 		if (isset($_SESSION['user'])) {
 			$this->redirect('user');
 		}
 
-		$this->call = $this->model('AccountModel');
+		$this->account = $this->model('AccountModel');
 	}
 
 	public function index()
@@ -26,11 +29,14 @@ class Login extends Controller
 			'css' => [
 				'Account/Style.css',
 				'flasher.css'
-			]
+			],
+			'username' => (isset($this->cookie['username'])) ? $this->cookie['username'] : '',
+			'password' => (isset($this->cookie['password'])) ? $this->cookie['password'] : '',
+			'remember' => (isset($this->cookie['remember'])) ? $this->cookie['remember'] : ''
 		];
 
 		$this->partial('Account/Header', $data);
-		$this->view('login');
+		$this->view('login', $data);
 		$this->partial('Account/Footer');
 	}
 
@@ -48,13 +54,13 @@ class Login extends Controller
 			'remember' => isset($_POST['remember-me']) ? true : false
 		];
 
-		$status = $this->call->login($data);
+		$status = $this->account->login($data);
 		if ($status === true) {
 			$_SESSION['user'] = $data['username'];
 			if (isset($_SESSION['link'])) {
 				$this->redirect($_SESSION['link']);
 			} else {
-				$this->redirect('user');
+				$this->redirect('dashboard');
 			}
 		} else {
 			Flasher::setFlash('Username atau password salah!', 'warning');
@@ -74,7 +80,7 @@ class Login extends Controller
 			'remember' => false
 		];
 
-		$status = $this->call->login($data);
+		$status = $this->account->login($data);
 		if ($status === true) {
 			$_SESSION['user'] = $data['username'];
 			$this->redirect('user');

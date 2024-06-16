@@ -2,7 +2,7 @@
 	<h2>Tambah Peminjaman</h2>
 
 	<section class="mt-4" id="tambah-peminjaman">
-		<form class="box shadow bg-light" action="user/do-tambah-peminjaman" method="POST" style="max-width:40rem">
+		<form class="box shadow bg-light" action="peminjaman/tambah" method="POST" style="max-width:40rem">
 			<?php Flasher::flash("tambah-peminjaman") ?>
 
 			<table>
@@ -10,14 +10,14 @@
 					<td><label for="kegiatan">Kegiatan</label></td>
 					<td>
 						<label class="mb-1" for="kegiatan">Kegiatan</label>
-						<input autocomplete="off" class="form-input" type="text" name="kegiatan" id="kegiatan" required>
+						<input autocomplete="off" class="form-input" type="text" name="kegiatan" id="kegiatan" placeholder="Isi kegiatan" required>
 					</td>
 				</tr>
 				<tr>
 					<td><label for="dresscode">Pakaian</label></td>
 					<td>
 						<label class="mb-1" for="dresscode">Pakaian</label>
-						<input autocomplete="off" class="form-input" type="text" name="dresscode" id="dresscode" required>
+						<input autocomplete="off" class="form-input" type="text" name="dresscode" id="dresscode" placeholder="Isi dresscode" required>
 					</td>
 				</tr>
 				<tr>
