@@ -1,7 +1,7 @@
 <main>
 	<h2>Profil Anda</h2>
 
-	<section class="mt-4" id="profile-information">
+	<div class="mt-4" id="profile-information">
 		<form class="box shadow bg-light" action="user/edit-profile" method="POST" enctype="multipart/form-data">
 			<h3>Informasi Profil</h3>
 			<p>Section untuk mengubah profil pengguna</p>
@@ -61,9 +61,9 @@
 				<button class="btn btn-primary mt-2" type="submit" name="edit">Simpan</button>
 			</span>
 		</form>
-	</section>
+	</div>
 
-	<section class="my-6" id="change-password">
+	<div class="my-6" id="change-password">
 		<div class="box shadow bg-light">
 			<h3>Perbarui Password</h3>
 			<p>Section untuk memperbarui password</p>
@@ -81,5 +81,5 @@
 				</span>
 			</form>
 		</div>
-	</section>
+	</div>
 </main>

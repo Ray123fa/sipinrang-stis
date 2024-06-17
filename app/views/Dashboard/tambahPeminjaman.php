@@ -1,7 +1,7 @@
 <main>
 	<h2>Tambah Peminjaman</h2>
 
-	<section class="mt-4" id="tambah-peminjaman">
+	<div class="mt-4" id="tambah-peminjaman">
 		<form class="box shadow bg-light" action="peminjaman/tambah" method="POST" style="max-width:40rem">
 			<?php Flasher::flash("tambah-peminjaman") ?>
 
@@ -57,5 +57,5 @@
 				<button class="btn btn-primary mt-2" type="submit" name="tambah">Simpan</button>
 			</span>
 		</form>
-	</section>
+	</div>
 </main>

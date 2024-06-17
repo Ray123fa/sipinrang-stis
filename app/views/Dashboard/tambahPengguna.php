@@ -1,7 +1,7 @@
 <main>
 	<h2>Tambah Pengguna</h2>
 
-	<section class="mt-4" id="tambah-pengguna">
+	<div class="mt-4" id="tambah-pengguna">
 		<form class="box shadow bg-light" action="user/add" method="POST" style="max-width:40rem">
 			<?php Flasher::flash("tambah-pengguna") ?>
 
@@ -47,6 +47,7 @@
 					<td>
 						<label class="mb-1" for="role">Role <span style="color: red;">*</span></label>
 						<select class="form-input" name="role" id="role" required>
+							<option value="" disabled>Select Role</option>
 							<option value="1" <?= ($data['level'] < 2) ? '' : 'disabled' ?>>Superadmin</option>
 							<option value="2">Admin</option>
 							<option value="3">User</option>
@@ -60,5 +61,5 @@
 				<button class="btn btn-primary mt-2" type="submit" name="tambah">Simpan</button>
 			</span>
 		</form>
-	</section>
+	</div>
 </main>

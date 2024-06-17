@@ -3,7 +3,7 @@
 <main>
 	<h2>Detail Peminjaman</h2>
 
-	<section class="mt-4" id="detail-peminjaman">
+	<div class="mt-4" id="detail-peminjaman">
 		<form class="box shadow bg-light" action="peminjaman/edit/<?= $data['peminjaman']['id_pinjam'] ?>" method="POST" style="max-width:40rem">
 			<?php Flasher::flash("detail-peminjaman") ?>
 
@@ -41,6 +41,7 @@
 					<td>
 						<label for="sesi">Sesi</label>
 						<select class="form-input" name="sesi" id="sesi" required disabled>
+							<option value="" disabled>Pilih Sesi</option>
 							<?php foreach ($data['list-sesi'] as $sesi) : ?>
 								<option value="<?= $sesi['kodeSesi'] ?>" <?= ($data['peminjaman']['sesi'] == $sesi['kodeSesi']) ? 'selected' : '' ?>><?= $sesi['namaSesi'] ?></option>
 							<?php endforeach; ?>
@@ -52,6 +53,7 @@
 					<td>
 						<label class="mb-1" for="ruang">Ruang</label>
 						<select class="form-input" name="ruang" id="ruang" required disabled>
+							<option value="" disabled>Pilih Ruang</option>
 							<option value="<?= $data['peminjaman']['ruang'] ?>"><?= $data['peminjaman']['ruang'] ?></option>
 						</select>
 					</td>
@@ -61,6 +63,7 @@
 					<td>
 						<label class="mb-1" for="status">Status</label>
 						<select class="form-input" name="status" id="status" required disabled>
+							<option value="" disabled>Pilih Status</option>
 							<?php if ($data['level'] == 1) : ?>
 								<?php foreach ($data['list-status'] as $status) : ?>
 									<option value="<?= $status['kode'] ?>" <?= ($kode_status == $status['kode']) ? 'selected' : '' ?>><?= $status['status'] ?></option>
@@ -90,5 +93,5 @@
 				</span>
 			<?php endif; ?>
 		</form>
-	</section>
+	</div>
 </main>
