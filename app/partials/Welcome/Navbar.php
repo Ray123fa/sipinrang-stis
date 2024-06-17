@@ -11,12 +11,12 @@
 		<li class="nav-link py-1"><a class="px-4 py-2 scroll-link" href="#services">Layanan</a></li>
 		<li class="nav-link py-1">
 			<?php if (!isset($_SESSION['user'])) : ?>
-				<a class="px-4 py-2" href="/login">
+				<a class="px-4 py-2" href="login">
 					<i class="fas fa-arrow-right-to-bracket"></i>
 					Login
 				</a>
 			<?php else : ?>
-				<a class="px-4 py-2" href="/user/logout">
+				<a class="px-4 py-2" href="user/logout">
 					Logout
 					<i class="fas fa-arrow-right-from-bracket"></i>
 				</a>
