@@ -47,7 +47,7 @@
 					<td>
 						<label class="mb-1" for="role">Role <span style="color: red;">*</span></label>
 						<select class="form-input" name="role" id="role" required>
-							<option value="" disabled>Select Role</option>
+							<option value="" disabled selected>Select Role</option>
 							<option value="1" <?= ($data['level'] < 2) ? '' : 'disabled' ?>>Superadmin</option>
 							<option value="2">Admin</option>
 							<option value="3">User</option>

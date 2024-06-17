@@ -1,6 +1,5 @@
 const password = document.getElementById("password");
 const repassword = document.getElementById("re-password");
-
 repassword.addEventListener("keyup", function () {
   const value = this.value;
 
@@ -19,4 +18,14 @@ nowa.addEventListener("keyup", function () {
   } else {
     this.setCustomValidity("");
   }
+});
+
+const reset = document.getElementById("reset");
+const input = document.querySelectorAll("input");
+const role = document.getElementById("role");
+reset.addEventListener("click", () => {
+  input.forEach((item) => {
+    item.value = "";
+  });
+  role.value = "";
 });
