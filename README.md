@@ -4,10 +4,6 @@
 
 Sipinrang merupakan sebuah sistem informasi yang dibuat untuk mempermudah proses peminjaman ruang yang ada di Polstat STIS.
 
-Aplikasi ini juga terintegrasi dengan bot telegram yang dapat mengirimkan notifikasi ke dalam private grup setiap terjadi perubahan pada tabel peminjaman. Selain mengirimkan notifikasi ke dalam grup, bot telegram tersebut juga memberikan layanan untuk cek status peminjaman berdasarkan ID Peminjaman, layanan untuk mengkoneksikan akun telegram dengan akun Sipinrang. Tak hanya itu, bagi yang sudah mengkoneksikannya dengan akun Sipinrang, apabila pihak BAU memberikan update mengenai peminjaman yang diajukan, bot telegram juga akan mengirimkan notifikasi ke akun yang ditautkan.
-
-[![Telegram Bot](https://img.shields.io/badge/Telegram-Bot-blue.svg?style=for-the-badge&logo=telegram)](https://t.me/sipinrang_bot)
-
 ### Roles
 
 | Roles   | Deskripsi                                                                                             |
